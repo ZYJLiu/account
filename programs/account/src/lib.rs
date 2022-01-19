@@ -5,7 +5,7 @@ declare_id!("4kiCL5ZnfTViX7WddCYvGMowULgkJNrnAAWRoz3JVT7e");
 
 #[program]
 pub mod todo {
-    use anchor_lang::solana_program::{program::invoke, system_instruction::transfer};
+    // use anchor_lang::solana_program::{program::invoke, system_instruction::transfer};
 
     use super::*;
     pub fn new_list(
@@ -27,7 +27,7 @@ pub mod todo {
         ctx: Context<Add>,
         _list_name: String, //pass in list name, to know which list to add item to?
         item_name: String, // pass in item name
-        bounty: u64, // pass in bounty amount
+        // bounty: u64, // pass in bounty amount
     ) -> ProgramResult {
         let user = &ctx.accounts.user; //signer
         let list = &mut ctx.accounts.list; //mutable instance of "NewList" struct and assign to variable "list"
@@ -41,34 +41,37 @@ pub mod todo {
         item.name = item_name; //name item
         item.creator = *user.to_account_info().key; //set item creator as user (who called this add function, creating this item)
 
+        // let amount = bounty;
+        // item.amount +=amount;
+
         // Move the bounty to the account. We account for the rent amount that Anchor's init
         // already transferred into the account.
-        let account_lamports = **item.to_account_info().lamports.borrow(); //lamports in item account (from rent)
-        let transfer_amount = bounty //bounty amount
-            .checked_sub(account_lamports)
-            .ok_or(TodoListError::BountyTooSmall)?; //subtract out "rent" amount already in account from "bounty" amount
+        // let account_lamports = **item.to_account_info().lamports.borrow(); //lamports in item account (from rent)
+        // let transfer_amount = bounty //bounty amount
+        //     .checked_sub(account_lamports)
+        //     .ok_or(TodoListError::BountyTooSmall)?; //subtract out "rent" amount already in account from "bounty" amount
 
-        if transfer_amount > 0 {
-            invoke( 
-                &transfer( 
-                    user.to_account_info().key, //from creator of item
-                    item.to_account_info().key, //to item account
-                    transfer_amount, //bounty amount to be transferred
-                ),
-                &[ //specify which accounts transfer will interact with
-                    user.to_account_info(), // creator (user) account
-                    item.to_account_info(), // item account (created by user)
-                    ctx.accounts.system_program.to_account_info(), //system program
-                ],
-            )?;
-        }
+        // if transfer_amount > 0 {
+        //     invoke( 
+        //         &transfer( 
+        //             user.to_account_info().key, //from creator of item
+        //             item.to_account_info().key, //to item account
+        //             transfer_amount, //bounty amount to be transferred
+        //         ),
+        //         &[ //specify which accounts transfer will interact with
+        //             user.to_account_info(), // creator (user) account
+        //             item.to_account_info(), // item account (created by user)
+        //             ctx.accounts.system_program.to_account_info(), //system program
+        //         ],
+        //     )?;
+        // }
 
         Ok(())
     }
 }
 
 #[derive(Accounts)]
-#[instruction(list_name: String, item_name: String, bounty: u64)]
+#[instruction(list_name: String, item_name: String)]//, bounty: u64
 pub struct Add<'info> {
     #[account(mut, has_one=list_owner @ TodoListError::WrongListOwner, seeds=[b"todolist", list_owner.to_account_info().key.as_ref(), name_seed(&list_name)], bump=list.bump)]
     pub list: Account<'info, TodoList>, //reference existing ToDoList account
@@ -84,15 +87,16 @@ pub struct Add<'info> {
 #[account]
 pub struct ListItem {
     pub creator: Pubkey, //user who created item
-    pub creator_finished: bool,
-    pub list_owner_finished: bool,
     pub name: String, //item name
+    pub amount: u64, // figure out where this goes
+    // pub creator_finished: bool,
+    // pub list_owner_finished: bool,
 }
 
 impl ListItem {
     fn space(name: &str) -> usize {
-        // discriminator + creator pubkey + 2 bools + name string
-        8 + 32 + 1 + 1 + 4 + name.len()
+        // discriminator + creator pubkey + amount + name string
+        8 + 32 + 8 + 4 + name.len() + 100 // come back and redo size after changes
     }
 }
 
@@ -130,7 +134,7 @@ impl TodoList {
             // name string
             4 + name.len() +
             // vec of item pubkeys
-            4 + (capacity as usize) * std::mem::size_of::<Pubkey>()
+            100 + (capacity as usize) * std::mem::size_of::<Pubkey>()
     }
 }
 
