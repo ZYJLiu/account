@@ -68,6 +68,59 @@ pub mod todo {
 
         Ok(())
     }
+
+    
+    pub fn finish(
+        ctx: Context<Finish>, 
+        _list_name: String, 
+        amount: i64,
+    ) -> ProgramResult {
+        let item = &mut ctx.accounts.item;
+        let list = &mut ctx.accounts.list;
+        let user = ctx.accounts.user.to_account_info().key;
+
+
+        // if !list.lines.contains(item.to_account_info().key) {
+        //     return Err(TodoListError::ItemNotFound.into());
+        // }
+
+        let is_item_creator = &item.creator == user;
+        // let is_list_owner = &list.list_owner == user;
+
+        // if !is_item_creator && !is_list_owner {
+        //     return Err(TodoListError::FinishPermissions.into());
+        // }
+        
+
+
+        if is_item_creator {
+            item.amount += amount;
+        }
+
+        // if is_list_owner {
+        //     item.list_owner_finished = true;
+        // }
+
+        // if item.creator_finished && item.list_owner_finished {
+        //     let item_key = item.to_account_info().key;
+        //     list.lines.retain(|key| key != item_key);
+        //     item.close(ctx.accounts.list_owner.to_account_info())?;
+        // }
+
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+#[instruction(list_name: String, amount: i64)] 
+pub struct Finish<'info> {
+    #[account(mut, has_one=list_owner @ TodoListError::WrongListOwner, seeds=[b"todolist", list_owner.to_account_info().key.as_ref(), name_seed(&list_name)], bump=list.bump)]
+    pub list: Account<'info, TodoList>, //access list
+    #[account(mut)]
+    pub list_owner: AccountInfo<'info>, //list owner
+    #[account(mut)]
+    pub item: Account<'info, ListItem>, //access item
+    pub user: Signer<'info>, //sign by user
 }
 
 #[derive(Accounts)]
@@ -88,7 +141,7 @@ pub struct Add<'info> {
 pub struct ListItem {
     pub creator: Pubkey, //user who created item
     pub name: String, //item name
-    pub amount: u64, // figure out where this goes
+    pub amount: i64, // figure out where this goes
     // pub creator_finished: bool,
     // pub list_owner_finished: bool,
 }
@@ -96,7 +149,7 @@ pub struct ListItem {
 impl ListItem {
     fn space(name: &str) -> usize {
         // discriminator + creator pubkey + amount + name string
-        8 + 32 + 8 + 4 + name.len() + 100 // come back and redo size after changes
+        200 + 8 + 32 + 8 + 4 + name.len() // added 100, come back and redo size after changes
     }
 }
 
@@ -134,7 +187,7 @@ impl TodoList {
             // name string
             4 + name.len() +
             // vec of item pubkeys
-            100 + (capacity as usize) * std::mem::size_of::<Pubkey>()
+            200 + (capacity as usize) * std::mem::size_of::<Pubkey>() // added 100 
     }
 }
 

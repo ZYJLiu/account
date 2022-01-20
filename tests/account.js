@@ -67,10 +67,10 @@ describe('todo', () => {
     return { publicKey: listAccount, data: list };
   }
 
-  async function addItem({list, user, name}) { //, bounty
+  async function addItem({list, user, name}) { 
     const itemAccount = anchor.web3.Keypair.generate();
     let program = programForUser(user);
-    await program.rpc.add(list.data.name, name, { // , new BN(bounty)
+    await program.rpc.add(list.data.name, name, { 
       accounts: {
         list: list.publicKey,
         listOwner: list.data.listOwner,
@@ -101,7 +101,36 @@ describe('todo', () => {
     };
   }
 
-//   async function cancelItem({ list, item, itemCreator, user }) {
+
+  async function finishItem({ list, listOwner, item, user, amount}) { 
+    let program = programForUser(user);
+    await program.rpc.finish(list.data.name, amount, {
+      accounts: {
+        list: list.publicKey,
+        listOwner: listOwner.key.publicKey,
+        item: item.publicKey,
+        user: user.key.publicKey,
+      }
+    });
+
+    let [listData, itemData] = await Promise.all([
+      program.account.todoList.fetch(list.publicKey),
+      program.account.listItem.fetch(item.publicKey),
+    ]);
+
+    return {
+      list: {
+        publicKey: list.publicKey,
+        data: listData,
+      },
+      item: {
+        publicKey: item.publicKey,
+        data: itemData,
+      }
+    };
+  }
+
+  //   async function cancelItem({ list, item, itemCreator, user }) {
 //     let program = programForUser(user);
 //     await program.rpc.cancel(list.data.name, {
 //       accounts: {
@@ -122,34 +151,6 @@ describe('todo', () => {
 //     }
 //   }
 
-//   async function finishItem({ list, listOwner, item, user, expectAccountClosed }) {
-//     let program = programForUser(user);
-//     await program.rpc.finish(list.data.name, {
-//       accounts: {
-//         list: list.publicKey,
-//         listOwner: listOwner.key.publicKey,
-//         item: item.publicKey,
-//         user: user.key.publicKey,
-//       }
-//     });
-
-//     let [listData, itemData] = await Promise.all([
-//       program.account.todoList.fetch(list.publicKey),
-//       expectAccountClosed ? null : await program.account.listItem.fetch(item.publicKey),
-//     ]);
-
-//     return {
-//       list: {
-//         publicKey: list.publicKey,
-//         data: listData,
-//       },
-//       item: {
-//         publicKey: item.publicKey,
-//         data: itemData,
-//       }
-//     };
-//   }
-
   describe('new list', () => {
     it('creates a list', async () => {
       const owner = await createUser();
@@ -163,30 +164,27 @@ describe('todo', () => {
 
   describe('add', () => {
     it('Anyone can add an item to a list', async () => {
-      const [owner, adder] = await createUsers(2);
+      const [owner, adder1, adder2] = await createUsers(3);
 
       // const adderStartingBalance = await getAccountBalance(adder.key.publicKey);
       const list = await createList(owner, 'list');
-      const result = await addItem({ list, user: adder, name: '1st Line'});
+      const result = await addItem({ list, user: adder1, name: '1st Line'});
 
       expect(result.list.data.lines, 'Item is added').deep.equals([result.item.publicKey]);
-      expect(result.item.data.creator.toString(), 'Item marked with creator').equals(adder.key.publicKey.toString());
+      expect(result.item.data.creator.toString(), 'Item marked with creator').equals(adder1.key.publicKey.toString());
       // expect(result.item.data.creatorFinished, 'creator_finished is false').equals(false);
       // expect(result.item.data.listOwnerFinished, 'list_owner_finished is false').equals(false);
       expect(result.item.data.name, 'Name is set').equals('1st Line');
       // expect(result.item.data.amount, 'test').equals(new anchor.BN(0)); this doesn't work for some reason
       assert.ok(result.item.data.amount.eq(new anchor.BN(0)));
   
-      console.log(list)
+      // console.log(list)
 
-      console.log(result.item.data.name)
+      // console.log(result.item.data.name)
       
       // console.log(result.item.data.creator)
-    
       // console.log(result.item.data.amount) // see amount = BN(0)
-
-      console.log(result.item.publicKey)
-
+      // console.log(result.item.publicKey)
       // console.log(result.list.data.lines)
 
       // expect(await getAccountBalance(result.item.publicKey), 'List account balance').equals(1 * LAMPORTS_PER_SOL);
@@ -194,24 +192,20 @@ describe('todo', () => {
       // let adderNewBalance = await getAccountBalance(adder.key.publicKey);
       // expectBalance(adderStartingBalance - adderNewBalance,  LAMPORTS_PER_SOL, 'Number of lamports removed from adder is equal to bounty');
 
-      const second = await addItem({ list, user: adder, name: '2nd Line'}); //, bounty: 1 * LAMPORTS_PER_SOL
+      const second = await addItem({ list, user: adder1, name: '2nd Line'}); //, bounty: 1 * LAMPORTS_PER_SOL
       // expect(second.list.data.lines, 'Item is added').deep.equals([result.item.publicKey, second.item.publicKey]);
       
-      console.log(second.item.data.name)
+      // console.log(second.item.data.name)
       // console.log(second.item.data.creator)
-
-      console.log(second.item.publicKey)
-
+      // console.log(second.item.publicKey)
       // console.log(second.list.data.lines)
 
-      const third = await addItem({ list, user: adder, name: '3rd Line'}); //, bounty: 1 * LAMPORTS_PER_SOL
+      const third = await addItem({ list, user: adder2, name: '3rd Line'}); //, bounty: 1 * LAMPORTS_PER_SOL
       // expect(third.list.data.lines, 'Item is added').deep.equals([result.item.publicKey, third.item.publicKey]); //not sure why this fails
-      
-      console.log(third.item.data.name)
+      // console.log(third.item.data.name)
       // console.log(third.item.data.creator)
-      console.log(third.item.publicKey)
-
-      console.log(third.list.data.lines)
+      // console.log(third.item.publicKey)
+      // console.log(third.list.data.lines)
     });
 
     // it('fails if the list is full', async () => {
@@ -426,31 +420,32 @@ describe('todo', () => {
 //     });
 //   });
 
-//   describe('finish', () => {
-//     it('List owner then item creator', async () => {
-//       const [owner, adder] = await createUsers(2);
+  describe('finish', () => {
+    it('Update', async () => {
+      const [owner, adder] = await createUsers(2);
+      const list = await createList(owner, 'list');
+      const { item } = await addItem({
+        list,
+        user: adder,
+        name: 'Item',
+      });
 
-//       const list = await createList(owner, 'list');
-//       const ownerInitial = await getAccountBalance(owner.key.publicKey);
 
-//       const bounty = 5 * LAMPORTS_PER_SOL;
-//       const { item } = await addItem({
-//         list,
-//         user: adder,
-//         bounty,
-//         name: 'An item',
-//       });
-
+      // console.log(item.name)
+      
 //       expect(await getAccountBalance(item.publicKey), 'initialized account has bounty').equals(bounty);
 
-//       const firstResult = await finishItem({
-//         list,
-//         item,
-//         user: owner,
-//         listOwner: owner,
-//       });
+      const test = await finishItem({
+        list,
+        item,
+        user: adder,
+        listOwner: owner,
+        amount: new anchor.BN(10),
+      }, );
 
-//       expect(firstResult.list.data.lines, 'Item still in list after first finish').deep.equals([item.publicKey]);
+      console.log(test)
+
+      // expect(test.list.data.lines, 'Item still in list after first finish').deep.equals([item.publicKey]);
 //       expect(firstResult.item.data.creatorFinished, 'Creator finish is false after owner calls finish').equals(false);
 //       expect(firstResult.item.data.listOwnerFinished, 'Owner finish flag gets set after owner calls finish').equals(true);
 //       expect(await getAccountBalance(firstResult.item.publicKey), 'Bounty remains on item after one finish call').equals(bounty);
@@ -647,6 +642,6 @@ describe('todo', () => {
 //       }
 
 //       expectBalance(await getAccountBalance(owner.key.publicKey), ownerInitial + bounty, 'Bounty transferred to owner just once');
-//     });
-//   });
+    });
+  });
 });
