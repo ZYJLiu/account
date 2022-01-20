@@ -80,16 +80,16 @@ pub mod todo {
         let user = ctx.accounts.user.to_account_info().key;
 
 
-        // if !list.lines.contains(item.to_account_info().key) {
-        //     return Err(TodoListError::ItemNotFound.into());
-        // }
+        if !list.lines.contains(item.to_account_info().key) {
+            return Err(TodoListError::ItemNotFound.into());
+        }
 
         let is_item_creator = &item.creator == user;
-        // let is_list_owner = &list.list_owner == user;
+        let is_list_owner = &list.list_owner == user;
 
-        // if !is_item_creator && !is_list_owner {
-        //     return Err(TodoListError::FinishPermissions.into());
-        // }
+        if !is_item_creator && !is_list_owner {
+            return Err(TodoListError::FinishPermissions.into());
+        }
         
 
 

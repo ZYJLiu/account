@@ -422,26 +422,29 @@ describe('todo', () => {
 
   describe('finish', () => {
     it('Update', async () => {
-      const [owner, adder] = await createUsers(2);
-      const list = await createList(owner, 'list');
+      const [owner, adder, adder2] = await createUsers(3);
+      const list = await createList(owner, 'Revenue');
+      
       const { item } = await addItem({
         list,
         user: adder,
-        name: 'Item',
+        name: 'Coffee',
       });
 
 
-      // console.log(item.name)
+
+      console.log(item)
       
 //       expect(await getAccountBalance(item.publicKey), 'initialized account has bounty').equals(bounty);
 
       const test = await finishItem({
         list,
-        item,
+        item: item,
         user: adder,
         listOwner: owner,
-        amount: new anchor.BN(10),
+        amount: new anchor.BN(5),
       }, );
+
 
       console.log(test)
 
