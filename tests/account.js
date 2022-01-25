@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 const { SystemProgram, LAMPORTS_PER_SOL } = anchor.web3;
 
 
-describe('Test', () => {
+describe('Begin Test', () => {
 
   const provider = anchor.Provider.env();
   anchor.setProvider(provider);
@@ -13,7 +13,7 @@ describe('Test', () => {
   
   //"User" functions
   async function createUser(airdropBalance) {
-    airdropBalance = airdropBalance ?? 3 * LAMPORTS_PER_SOL;
+    airdropBalance = airdropBalance ?? 5 * LAMPORTS_PER_SOL;
     let user = anchor.web3.Keypair.generate();
     let sig = await provider.connection.requestAirdrop(user.publicKey, airdropBalance);
     await provider.connection.confirmTransaction(sig);
@@ -105,7 +105,9 @@ describe('Test', () => {
 
 
 
-
+///TEST STARTS HERE
+///TEST STARTS HERE
+///TEST STARTS HERE
 
 
 
@@ -113,59 +115,65 @@ describe('Test', () => {
   it('Create Data Account', async () => {
     // Add your test here.
 
-    const owner = await createUser();
+    const [owner, receiver] = await createUsers(2);
+    
     const program = programForUser(owner);
 
+    // Create Revenue and Asset Lists and Add items
+    console.log('Created Revenue & Added Two Line Items')    
     const revenue = await createList(owner, 'Revenue');
-    const expense = await createList(owner, 'Cash');
-    // let CashList = await createList(owner, 'Cash');
-    // console.log(list)
-    // console.log(ExpenseList)
-    // console.log(CashList)
+    const coffee = await addItem({list: revenue, user: owner, name: 'Coffee',});
+    const item2 = await addItem({list: revenue, user: owner, name: 'Beer',});
 
-    const receiver = await createUser();
+    let revenue_items = await program.account.list.fetch(revenue.publicKey)
+    // console.log(revenue_items) 
 
-    const item1 = await addItem({list: revenue, user: owner, name: 'Coffee',});
-    
+    const expense = await createList(owner, 'Expense');
+    const item3 = await addItem({list: expense, user: owner, name: 'Service Expense',});
+    let expense_items = await program.account.list.fetch(expense.publicKey)
+    // console.log(expense_items) 
+
+    const asset = await createList(owner, 'Asset');
+    const item4 = await addItem({list: asset, user: owner, name: 'Cash',});
+    let asset_items = await program.account.list.fetch(asset.publicKey)
+    // console.log(asset_items) 
 
 
-
-    // const item2 = await addItem({list: expense, user: owner, name: 'Cash',});
-    
-    // console.log(revenue.data.name)
-
-    // // const program2 = programForUser(receiver);
-    
-    
-    
-    const test = await program.rpc.pay(new anchor.BN(1), {
+    //Payment - User sends SOL to Receiver
+    const test = await program.rpc.pay(new anchor.BN(2), {
       accounts:{
-        // list: revenue.publicKey,
-        // owner: owner.key.publicKey,
-        item1: item1.item.publicKey,
+        item1: coffee.item.publicKey,
         receiver: receiver.key.publicKey,
         user: owner.key.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
       },
-    
+        signers: [coffee.pubkey, owner.key]
+
     });
     
 
+
     
+    let test2 = await program.account.dataAccount.fetch(coffee.item.publicKey)
+    console.log(test2)
 
 
+    // const balance1 = await getAccountBalance(receiver.key.publicKey) / LAMPORTS_PER_SOL
+    // console.log("Receiver Ending SOL Balance")
+    // console.log(balance1);
 
-    const balance1 = await getAccountBalance(receiver.key.publicKey) / LAMPORTS_PER_SOL
-    console.log(balance1);
-
-    const balance3 = await getAccountBalance(owner.key.publicKey) / LAMPORTS_PER_SOL
-    console.log(balance3);
+    // const balance3 = await getAccountBalance(owner.key.publicKey) / LAMPORTS_PER_SOL
+    // console.log("Owner Ending SOL Balance")
+    // console.log(balance3);
     
-    console.log(item1) //convert to number
+    // console.log(item1)     
     // console.log(item2)
 
 
 
+
+
+        // // const program2 = programForUser(receiver);
 
     
     // const program = anchor.workspace.Anchor;

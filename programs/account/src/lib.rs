@@ -43,10 +43,10 @@ pub mod anchor {
         ctx: Context<Pay>,
         amount: u64,
     ) -> ProgramResult {
-        // let item1 = &mut ctx.accounts.item1;
+        let item1 = &mut ctx.accounts.item1;
         // let item2 = &mut ctx.accounts.item2;
         let user: &Signer = &ctx.accounts.user;
-        // item1.amount += amount;
+        item1.amount += amount;
         // item2.amount += amount;
 
 
