@@ -44,10 +44,10 @@ pub mod anchor {
         amount: u64,
     ) -> ProgramResult {
         let item1 = &mut ctx.accounts.item1;
-        // let item2 = &mut ctx.accounts.item2;
+        let item2 = &mut ctx.accounts.item2;
         let user: &Signer = &ctx.accounts.user;
-        item1.amount += amount;
-        // item2.amount += amount;
+        item1.amount -= amount;
+        item2.amount += amount;
 
 
         let ix = anchor_lang::solana_program::system_instruction::transfer(
@@ -60,6 +60,34 @@ pub mod anchor {
             &[
                 ctx.accounts.user.to_account_info(),
                 ctx.accounts.receiver.to_account_info(),
+                ctx.accounts.system_program.to_account_info(),
+            ],
+        );
+
+        Ok(())
+    }
+
+       pub fn receive(
+        ctx: Context<Receive>,
+        amount: u64,
+    ) -> ProgramResult {
+        let item1 = &mut ctx.accounts.item1;
+        let item2 = &mut ctx.accounts.item2;
+        let payer= &ctx.accounts.payer;
+        item1.amount += amount;
+        item2.amount += amount;
+
+
+        let ix = anchor_lang::solana_program::system_instruction::transfer(
+            &ctx.accounts.payer.key(),
+            &ctx.accounts.user.key(),
+            amount * 1000000000,
+        );
+        anchor_lang::solana_program::program::invoke(
+            &ix,
+            &[
+                ctx.accounts.payer.to_account_info(),
+                ctx.accounts.user.to_account_info(),
                 ctx.accounts.system_program.to_account_info(),
             ],
         );
@@ -83,34 +111,6 @@ pub mod anchor {
     //         &ctx.accounts.payer.key(),
     //         &ctx.accounts.user.key(),
     //         amount,
-    //     );
-    //     anchor_lang::solana_program::program::invoke(
-    //         &ix,
-    //         &[
-    //             ctx.accounts.payer.to_account_info(),
-    //             ctx.accounts.user.to_account_info(),
-    //             ctx.accounts.system_program.to_account_info(),
-    //         ],
-    //     );
-
-    //     Ok(())
-    // }
-
-    // pub fn receive(
-    //     ctx: Context<Receive>,
-    //     amount: u64,
-    // ) -> ProgramResult {
-    //     // let item1 = &mut ctx.accounts.item1;
-    //     // let item2 = &mut ctx.accounts.item2;
-    //     let payer= &ctx.accounts.payer;
-    //     // item1.amount += amount;
-    //     // item2.amount += amount;
-
-
-    //     let ix = anchor_lang::solana_program::system_instruction::transfer(
-    //         &ctx.accounts.payer.key(),
-    //         &ctx.accounts.user.key(),
-    //         amount * 1000000000,
     //     );
     //     anchor_lang::solana_program::program::invoke(
     //         &ix,
@@ -204,20 +204,43 @@ impl DataAccount {
     }
 }
 
-// Update Item "Pay"
+// Payment
 #[derive(Accounts)]
 #[instruction(amount: u64)]
 pub struct Pay<'info> {
     #[account(mut)]
     pub item1: Account<'info, DataAccount>,
     #[account(mut)]
-    // pub item2: Account<'info, DataAccount>,
-    // #[account(mut)]
+    pub item2: Account<'info, DataAccount>,
+    #[account(mut)]
     pub receiver: AccountInfo<'info>,
     #[account(mut)]
     pub user: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
+
+// Receive
+#[derive(Accounts)]
+#[instruction(amount: u64)]
+pub struct Receive<'info> {
+    #[account(mut)]
+    pub item1: Account<'info, DataAccount>,
+    #[account(mut)]
+    pub item2: Account<'info, DataAccount>,
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    #[account(mut)]
+    pub user: AccountInfo<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+
+
+
+
+
+
+
 
 // #[derive(Accounts)]
 // #[instruction(amount: u64)]

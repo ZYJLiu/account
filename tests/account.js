@@ -115,60 +115,94 @@ describe('Begin Test', () => {
   it('Create Data Account', async () => {
     // Add your test here.
 
-    const [owner, receiver] = await createUsers(2);
+    const [owner, receiver, payer] = await createUsers(3);
     
     const program = programForUser(owner);
+    const program2 = programForUser(payer);
 
     // Create Revenue and Asset Lists and Add items
     console.log('Created Revenue & Added Two Line Items')    
     const revenue = await createList(owner, 'Revenue');
     const coffee = await addItem({list: revenue, user: owner, name: 'Coffee',});
-    const item2 = await addItem({list: revenue, user: owner, name: 'Beer',});
+    const beer = await addItem({list: revenue, user: owner, name: 'Beer',});
 
     let revenue_items = await program.account.list.fetch(revenue.publicKey)
     // console.log(revenue_items) 
 
     const expense = await createList(owner, 'Expense');
-    const item3 = await addItem({list: expense, user: owner, name: 'Service Expense',});
+    const service = await addItem({list: expense, user: owner, name: 'Service Expense',});
     let expense_items = await program.account.list.fetch(expense.publicKey)
     // console.log(expense_items) 
 
     const asset = await createList(owner, 'Asset');
-    const item4 = await addItem({list: asset, user: owner, name: 'Cash',});
+    const cash = await addItem({list: asset, user: owner, name: 'Cash',});
     let asset_items = await program.account.list.fetch(asset.publicKey)
     // console.log(asset_items) 
 
 
-    //Payment - User sends SOL to Receiver
-    const test = await program.rpc.pay(new anchor.BN(2), {
+
+
+    //Receive - Payer sends SOL to User
+    const receive = await program2.rpc.receive(new anchor.BN(3), {
       accounts:{
-        item1: coffee.item.publicKey,
-        receiver: receiver.key.publicKey,
+        item1: cash.item.publicKey,
+        item2: coffee.item.publicKey,
+        payer: payer.key.publicKey,
         user: owner.key.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
       },
-        signers: [coffee.pubkey, owner.key]
+        signers: [payer.key]
 
     });
-    
 
+    // let test2 = await program.account.dataAccount.fetch(service.item.publicKey)
+    // console.log(test2)
 
-    
+    let test1 = await program.account.dataAccount.fetch(cash.item.publicKey)
+    console.log(test1)
+
     let test2 = await program.account.dataAccount.fetch(coffee.item.publicKey)
     console.log(test2)
 
 
-    // const balance1 = await getAccountBalance(receiver.key.publicKey) / LAMPORTS_PER_SOL
-    // console.log("Receiver Ending SOL Balance")
-    // console.log(balance1);
+    const balance3 = await getAccountBalance(payer.key.publicKey) / LAMPORTS_PER_SOL
+    console.log("Payer Ending SOL Balance")
+    console.log(balance3);
 
-    // const balance3 = await getAccountBalance(owner.key.publicKey) / LAMPORTS_PER_SOL
-    // console.log("Owner Ending SOL Balance")
-    // console.log(balance3);
+    const balance4 = await getAccountBalance(owner.key.publicKey) / LAMPORTS_PER_SOL
+    console.log("Owner Ending SOL Balance")
+    console.log(balance4);
+
+
+
+    // Payment - User sends SOL to Receiver
+    const pay = await program.rpc.pay(new anchor.BN(1), {
+      accounts:{
+        item1: cash.item.publicKey,
+        item2: service.item.publicKey,
+        receiver: receiver.key.publicKey,
+        user: owner.key.publicKey,
+        systemProgram: anchor.web3.SystemProgram.programId,
+      },
+        signers: [owner.key]
+
+    });
     
-    // console.log(item1)     
-    // console.log(item2)
+    let test3 = await program.account.dataAccount.fetch(service.item.publicKey)
+    console.log(test3)
 
+    let test4 = await program.account.dataAccount.fetch(cash.item.publicKey)
+    console.log(test4)
+
+
+    const balance1 = await getAccountBalance(receiver.key.publicKey) / LAMPORTS_PER_SOL
+    console.log("Receiver Ending SOL Balance")
+    console.log(balance1);
+
+    const balance5 = await getAccountBalance(owner.key.publicKey) / LAMPORTS_PER_SOL
+    console.log("Owner Ending SOL Balance")
+    console.log(balance5);
+    
 
 
 
