@@ -13,7 +13,7 @@ describe('Begin Test', () => {
   
   //"User" functions
   async function createUser(airdropBalance) {
-    airdropBalance = airdropBalance ?? 5 * LAMPORTS_PER_SOL;
+    airdropBalance = airdropBalance ?? 3 * LAMPORTS_PER_SOL;
     let user = anchor.web3.Keypair.generate();
     let sig = await provider.connection.requestAirdrop(user.publicKey, airdropBalance);
     await provider.connection.confirmTransaction(sig);
@@ -112,38 +112,46 @@ describe('Begin Test', () => {
 
 
 
-  it('Create Data Account', async () => {
+  it('Create Accounts', async () => {
     // Add your test here.
 
-    const [owner, receiver, payer] = await createUsers(3);
+    const owner = await createUser();
     
     const program = programForUser(owner);
-    const program2 = programForUser(payer);
 
-    // Create Revenue and Asset Lists and Add items
-    console.log('Created Revenue & Added Two Line Items')    
     const revenue = await createList(owner, 'Revenue');
     const coffee = await addItem({list: revenue, user: owner, name: 'Coffee',});
     const beer = await addItem({list: revenue, user: owner, name: 'Beer',});
 
     let revenue_items = await program.account.list.fetch(revenue.publicKey)
-    // console.log(revenue_items) 
+    console.log(revenue_items) 
 
     const expense = await createList(owner, 'Expense');
     const service = await addItem({list: expense, user: owner, name: 'Service Expense',});
     let expense_items = await program.account.list.fetch(expense.publicKey)
-    // console.log(expense_items) 
+    console.log(expense_items) 
+
+  });
+
+
+  it('Revenue - Receive Payment', async () => {
+    // Add your test here.
+
+    const [owner, payer] = await createUsers(2);
+    
+    const program = programForUser(owner);
+    const program2 = programForUser(payer);
+
+    // Create Revenue and Asset Lists and Add items
+    const revenue = await createList(owner, 'Revenue');
+    const coffee = await addItem({list: revenue, user: owner, name: 'Coffee',});
 
     const asset = await createList(owner, 'Asset');
     const cash = await addItem({list: asset, user: owner, name: 'Cash',});
-    let asset_items = await program.account.list.fetch(asset.publicKey)
-    // console.log(asset_items) 
-
-
 
 
     //Receive - Payer sends SOL to User
-    const receive = await program2.rpc.receive(new anchor.BN(3), {
+    const receive = await program2.rpc.receive(new anchor.BN(2), {
       accounts:{
         item1: cash.item.publicKey,
         item2: coffee.item.publicKey,
@@ -174,6 +182,26 @@ describe('Begin Test', () => {
     console.log(balance4);
 
 
+    _owner = owner
+    _cash = cash
+
+  });
+
+  it('Expense - Send Payment', async () => {
+    // Add your test here.
+
+    const owner = _owner
+    const receiver = await createUser();
+    
+    const program = programForUser(owner);
+    
+    const cash = _cash
+    const expense = await createList(owner, 'Expense');
+    const service = await addItem({list: expense, user: owner, name: 'Service Expense',});
+
+    // const asset = await createList(owner, 'Asset');
+    // const cash = await addItem({list: asset, user: owner, name: 'Cash',});
+
 
     // Payment - User sends SOL to Receiver
     const pay = await program.rpc.pay(new anchor.BN(1), {
@@ -202,68 +230,6 @@ describe('Begin Test', () => {
     const balance5 = await getAccountBalance(owner.key.publicKey) / LAMPORTS_PER_SOL
     console.log("Owner Ending SOL Balance")
     console.log(balance5);
-    
-
-
-
-
-        // // const program2 = programForUser(receiver);
-
-    
-    // const program = anchor.workspace.Anchor;
-
-    // const [owner, payer, receiver] = await createUsers(3);
-
-
-    // const item1 = anchor.web3.Keypair.generate();
-    // const item2 = anchor.web3.Keypair.generate();
-    // console.log(payer.key.publicKey.toString())
-    
-    // await program.rpc.create('Expense', {
-    //   accounts:{
-    //     item: item1.publicKey,
-    //     user: owner.key.publicKey,
-    //     systemProgram: anchor.web3.SystemProgram.programId,
-    //   },
-    //   signers: [item1]
-
-    // });
-
-    // await program.rpc.create('Accounts Payable', {
-    //   accounts:{
-    //     item: item2.publicKey,
-    //     user: owner.key.publicKey,
-    //     systemProgram: anchor.web3.SystemProgram.programId,
-    //   },
-    //   signers: [item2]
-
-    // });
-
-
-    // await program2.rpc.receive(new anchor.BN(1), {
-    //   accounts:{
-    //     // item1: item1.publicKey,
-    //     // item2: item2.publicKey,
-    //     payer: payer.key.publicKey,
-    //     systemProgram: anchor.web3.SystemProgram.programId,
-    //     user: owner.key.publicKey,
-    //   },
-    // });
-
-  
-    
-    // const Coffee = await program.account.dataAccount.fetch(item1.publicKey);
-    // console.log(Coffee.amount);
-
-    // const Cash = await program.account.dataAccount.fetch(item2.publicKey);
-    // console.log(Cash.amount);
-    
-    // const balance = await getAccountBalance(payer.key.publicKey) / LAMPORTS_PER_SOL
-    // console.log(balance);
-
-
-
-
 
   });
 });

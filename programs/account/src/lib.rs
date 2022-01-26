@@ -37,36 +37,6 @@ pub mod anchor {
         Ok(())
     }
 
-    //THIS IS WHERE IT IS STILL WORKING
-    
-    pub fn pay(
-        ctx: Context<Pay>,
-        amount: u64,
-    ) -> ProgramResult {
-        let item1 = &mut ctx.accounts.item1;
-        let item2 = &mut ctx.accounts.item2;
-        let user: &Signer = &ctx.accounts.user;
-        item1.amount -= amount;
-        item2.amount += amount;
-
-
-        let ix = anchor_lang::solana_program::system_instruction::transfer(
-            &ctx.accounts.user.key(),
-            &ctx.accounts.receiver.key(),
-            amount * 1000000000,
-        );
-        anchor_lang::solana_program::program::invoke(
-            &ix,
-            &[
-                ctx.accounts.user.to_account_info(),
-                ctx.accounts.receiver.to_account_info(),
-                ctx.accounts.system_program.to_account_info(),
-            ],
-        );
-
-        Ok(())
-    }
-
        pub fn receive(
         ctx: Context<Receive>,
         amount: u64,
@@ -95,34 +65,33 @@ pub mod anchor {
         Ok(())
     }
 
-    // //Error: Signature verification failed
-    // pub fn receive(
-    //     ctx: Context<Receive>,
-    //     amount: u64,
-    // ) -> ProgramResult {
-    //     // let item1 = &mut ctx.accounts.item1;
-    //     // let item2 = &mut ctx.accounts.item2;
-    //     let payer: &Signer = &ctx.accounts.payer;
-    //     // item1.amount += amount;
-    //     // item2.amount += amount;
+    pub fn pay(
+        ctx: Context<Pay>,
+        amount: u64,
+    ) -> ProgramResult {
+        let item1 = &mut ctx.accounts.item1;
+        let item2 = &mut ctx.accounts.item2;
+        let user: &Signer = &ctx.accounts.user;
+        item1.amount -= amount;
+        item2.amount += amount;
 
 
-    //     let ix = anchor_lang::solana_program::system_instruction::transfer(
-    //         &ctx.accounts.payer.key(),
-    //         &ctx.accounts.user.key(),
-    //         amount,
-    //     );
-    //     anchor_lang::solana_program::program::invoke(
-    //         &ix,
-    //         &[
-    //             ctx.accounts.payer.to_account_info(),
-    //             ctx.accounts.user.to_account_info(),
-    //             ctx.accounts.system_program.to_account_info(),
-    //         ],
-    //     );
+        let ix = anchor_lang::solana_program::system_instruction::transfer(
+            &ctx.accounts.user.key(),
+            &ctx.accounts.receiver.key(),
+            amount * 1000000000,
+        );
+        anchor_lang::solana_program::program::invoke(
+            &ix,
+            &[
+                ctx.accounts.user.to_account_info(),
+                ctx.accounts.receiver.to_account_info(),
+                ctx.accounts.system_program.to_account_info(),
+            ],
+        );
 
-    //     Ok(())
-    // }
+        Ok(())
+    }
     
 }
 
@@ -136,7 +105,7 @@ fn name_seed(name: &str) -> &[u8] {
 }
 
 
-//Create "List" Below
+//Create List
 #[derive(Accounts)]
 #[instruction(name: String, capacity: u16, list_bump: u8)]
 pub struct CreateList<'info> {
@@ -153,6 +122,7 @@ pub struct CreateList<'info> {
     pub user: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
+
 
 //"List" Data Account fields
 #[account]
@@ -175,7 +145,7 @@ impl List {
     }
 }
 
-//Create item
+//Create Item
 #[derive(Accounts)]
 #[instruction(list_name: String, item_name: String)]
 pub struct AddItem<'info> {
@@ -189,7 +159,7 @@ pub struct AddItem<'info> {
     pub system_program: Program<'info, System>,
 }
 
-
+//Item Data account fields
 #[account]
 pub struct DataAccount{
     pub creator: Pubkey,
@@ -204,22 +174,8 @@ impl DataAccount {
     }
 }
 
-// Payment
-#[derive(Accounts)]
-#[instruction(amount: u64)]
-pub struct Pay<'info> {
-    #[account(mut)]
-    pub item1: Account<'info, DataAccount>,
-    #[account(mut)]
-    pub item2: Account<'info, DataAccount>,
-    #[account(mut)]
-    pub receiver: AccountInfo<'info>,
-    #[account(mut)]
-    pub user: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
 
-// Receive
+// Receive SOL
 #[derive(Accounts)]
 #[instruction(amount: u64)]
 pub struct Receive<'info> {
@@ -233,32 +189,20 @@ pub struct Receive<'info> {
     pub user: AccountInfo<'info>,
     pub system_program: Program<'info, System>,
 }
-
-
-
-
-
-
-
-
-
-// #[derive(Accounts)]
-// #[instruction(amount: u64)]
-// pub struct Receive<'info> {
-//     // #[account(mut)]
-//     // pub item1: Account<'info, DataAccount>,
-//     // #[account(mut)]
-//     // pub item2: Account<'info, DataAccount>,
-//     #[account(mut)]
-//     pub user: AccountInfo<'info>,
-//     #[account(mut)]
-//     pub payer: Signer<'info>,
-//     pub system_program: Program<'info, System>,
-// }
-
-
-
-
+// Pay SOL
+#[derive(Accounts)]
+#[instruction(amount: u64)]
+pub struct Pay<'info> {
+    #[account(mut)]
+    pub item1: Account<'info, DataAccount>,
+    #[account(mut)]
+    pub item2: Account<'info, DataAccount>,
+    #[account(mut)]
+    pub receiver: AccountInfo<'info>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
 
 
         
