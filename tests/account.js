@@ -13,7 +13,7 @@ describe('Begin Test', () => {
   
   //"User" functions
   async function createUser(airdropBalance) {
-    airdropBalance = airdropBalance ?? 3 * LAMPORTS_PER_SOL;
+    airdropBalance = airdropBalance ?? 2 * LAMPORTS_PER_SOL;
     let user = anchor.web3.Keypair.generate();
     let sig = await provider.connection.requestAirdrop(user.publicKey, airdropBalance);
     await provider.connection.confirmTransaction(sig);
@@ -126,8 +126,8 @@ describe('Begin Test', () => {
     let revenue_items = await program.account.list.fetch(revenue.publicKey)
     console.log(revenue_items) 
 
-    const expense = await createList(owner, 'Expense');
-    const service = await addItem({list: expense, user: owner, name: 'Service Expense',});
+    const expense = await createList(owner, 'Asset');
+    const service = await addItem({list: expense, user: owner, name: 'Cash',});
     let expense_items = await program.account.list.fetch(expense.publicKey)
     console.log(expense_items) 
 
@@ -149,9 +149,17 @@ describe('Begin Test', () => {
     const asset = await createList(owner, 'Asset');
     const cash = await addItem({list: asset, user: owner, name: 'Cash',});
 
+    const balance7 = await getAccountBalance(payer.key.publicKey) / LAMPORTS_PER_SOL
+    console.log("Payer Beginning Balance")
+    console.log(balance7);
+
+    const balance8 = await getAccountBalance(owner.key.publicKey) / LAMPORTS_PER_SOL
+    console.log("Owner Beginning Balance")
+    console.log(balance8);
+
 
     //Receive - Payer sends SOL to User
-    const receive = await program2.rpc.receive(new anchor.BN(2), {
+    const receive = await program2.rpc.receive(new anchor.BN(1), {
       accounts:{
         item1: cash.item.publicKey,
         item2: coffee.item.publicKey,
@@ -174,11 +182,11 @@ describe('Begin Test', () => {
 
 
     const balance3 = await getAccountBalance(payer.key.publicKey) / LAMPORTS_PER_SOL
-    console.log("Payer Ending SOL Balance")
+    console.log("Payer Ending Balance")
     console.log(balance3);
 
     const balance4 = await getAccountBalance(owner.key.publicKey) / LAMPORTS_PER_SOL
-    console.log("Owner Ending SOL Balance")
+    console.log("Owner Ending Balance")
     console.log(balance4);
 
 
@@ -202,6 +210,15 @@ describe('Begin Test', () => {
     // const asset = await createList(owner, 'Asset');
     // const cash = await addItem({list: asset, user: owner, name: 'Cash',});
 
+    const balance9 = await getAccountBalance(receiver.key.publicKey) / LAMPORTS_PER_SOL
+    console.log("Receiver Beginning Balance")
+    console.log(balance9);
+
+    const balance10 = await getAccountBalance(owner.key.publicKey) / LAMPORTS_PER_SOL
+    console.log("Owner Beginning Balance")
+    console.log(balance10);
+
+
 
     // Payment - User sends SOL to Receiver
     const pay = await program.rpc.pay(new anchor.BN(1), {
@@ -224,11 +241,11 @@ describe('Begin Test', () => {
 
 
     const balance1 = await getAccountBalance(receiver.key.publicKey) / LAMPORTS_PER_SOL
-    console.log("Receiver Ending SOL Balance")
+    console.log("Receiver Ending Balance")
     console.log(balance1);
 
     const balance5 = await getAccountBalance(owner.key.publicKey) / LAMPORTS_PER_SOL
-    console.log("Owner Ending SOL Balance")
+    console.log("Owner Ending Balance")
     console.log(balance5);
 
   });
