@@ -3,12 +3,23 @@ const BN = require('bn.js');
 const expect = require('chai').expect;
 const { SystemProgram, LAMPORTS_PER_SOL } = anchor.web3;
 
+// Read the generated IDL.
+const idl = JSON.parse(
+  require("fs").readFileSync("./target/idl/anchor.json", "utf8")
+);
+
+//Address of the deployed program
+const programId = new anchor.web3.PublicKey("4kiCL5ZnfTViX7WddCYvGMowULgkJNrnAAWRoz3JVT7e");
+
+//Generate the program client from IDL
+const mainProgram = new anchor.Program(idl, programId);
+
 
 describe('Begin Test', () => {
 
   const provider = anchor.Provider.env();
   anchor.setProvider(provider);
-  const mainProgram = anchor.workspace.Anchor;
+  // const mainProgram = anchor.workspace.Anchor;
 
   
   //"User" functions
