@@ -16,7 +16,7 @@ window.Buffer = Buffer;
 const { SystemProgram, Keypair } = web3;
 
 // Create a keypair for the account that will hold the GIF data.
-let baseAccount = Keypair.generate();
+let baseAccount = [];
 
 // Get our program's id from the IDL file.
 const programID = new PublicKey(idl.metadata.address);
@@ -44,7 +44,7 @@ const App = () => {
   const [inputValue, setInputValue] = useState('');
   const [gifList, setGifList] = useState([]);
 
-  const [nameValue, setNameValue] = useState('');
+  const [nameValue, setNameValue] = useState([]);
   
   // Actions
   const checkIfWalletIsConnected = async () => {
@@ -133,8 +133,8 @@ const App = () => {
         name.slice(0, 32)
       ], program.programId);
 
-      console.log(listAccount.toString())
-      console.log("Created a new BaseAccount w/ address:", listAccount.toString())
+      // console.log(listAccount.toString())
+      // console.log("Created a new BaseAccount w/ address:", listAccount.toString())
   
       await program.rpc.createList(name, capacity, bump,{
         accounts: {
@@ -145,13 +145,15 @@ const App = () => {
         // signers: [baseAccount]
       });
 
-
-
+      baseAccount.push(listAccount)
+      // console.log(listAccount.toString())
       console.log("Created a new BaseAccount w/ address:", listAccount.toString())
       let list = await program.account.list.fetch(listAccount);
       console.log(list)
-      // return { publicKey: listAccount, data: list };
-      // await getGifList();
+      // console.log(baseAccount.toString())
+      // let account = await program.account.list.fetch(baseAccount);
+      // console.log(account)
+      await getGifList();
   
     } catch(error) {
       console.log("Error creating BaseAccount account:", error)
@@ -182,7 +184,7 @@ const App = () => {
 
   const renderConnectedContainer = () => {
     // If we hit this, it means the program account hasn't been initialized.
-      if (gifList === null) {
+      // if (gifList != null) {
         return (
           <div className="connected-container">
              <form
@@ -193,21 +195,17 @@ const App = () => {
             >
               <input
                   type="text"
-                  placeholder="Freedom"
+                  placeholder="Account Name"
                   value={nameValue}
                   onChange={onNameChange}
                 />
               <button className="cta-button submit-gif-button" onClick={createGifAccount}>
-                Create
+                Account
               </button>
             </form>
-          </div>
-        )
-      } 
-      // Otherwise, we're good! Account exists. User can submit GIFs.
-      else {
-        return(
-          <div className="connected-container">
+
+    
+
             <form
               onSubmit={(event) => {
                 event.preventDefault();
@@ -216,25 +214,59 @@ const App = () => {
             >
               <input
                 type="text"
-                placeholder="Enter gif link!"
+                placeholder="Line Item"
                 value={inputValue}
                 onChange={onInputChange}
               />
               <button type="submit" className="cta-button submit-gif-button">
-                Submit
+                Item
               </button>
             </form>
             <div className="gif-grid">
               {/* We use index as the key instead, also, the src is now item.gifLink */}
-              {gifList.map((item, index) => (
+              {/* {gifList.map((item, index) => (
                 <div className="gif-item" key={index}>
+                  <li key={item}>{item}</li>
                   <img src={item.gifLink} />
-                </div>
-              ))}
+                </div> */}
+              {/* ))} */}
             </div>
+
           </div>
+          
         )
-      }
+      // } 
+      // Otherwise, we're good! Account exists. User can submit GIFs.
+      // else {
+      //   return(
+      //     <div className="connected-container">
+      //       <form
+      //         onSubmit={(event) => {
+      //           event.preventDefault();
+      //           sendGif();
+      //         }}
+      //       >
+      //         <input
+      //           type="text"
+      //           placeholder="Enter gif link!"
+      //           value={inputValue}
+      //           onChange={onInputChange}
+      //         />
+      //         <button type="submit" className="cta-button submit-gif-button">
+      //           Submit
+      //         </button>
+      //       </form>
+      //       <div className="gif-grid">
+      //         {/* We use index as the key instead, also, the src is now item.gifLink */}
+      //         {gifList.map((item, index) => (
+      //           <div className="gif-item" key={index}>
+      //             <img src={item.gifLink} />
+      //           </div>
+      //         ))}
+      //       </div>
+      //     </div>
+      //   )
+      // }
     }
 
   // UseEffects
@@ -246,14 +278,28 @@ const App = () => {
     return () => window.removeEventListener('load', onLoad);
   }, []);
 
+
+
+
+
+
+
+
+
+
+
+
+
   const getGifList = async() => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+      // let baseAccount = baseAccount
+      const account = await program.account.list.fetch(baseAccount.toString());
       
-      console.log("Got the account", account)
-      setGifList(account.gifList)
+      console.log(account)
+      // console.log("Got the account", account)
+      setGifList(account)
   
     } catch (error) {
       console.log("Error in getGifList: ", error)
