@@ -5,21 +5,27 @@ import './App.css';
 //import components
 import Form from './components/Form';
 import TodoList from './components/TodoList';
+import Item from './components/Item';
+import ItemList from './components/ItemList';
 
+
+//GIF
+const GIF = [
+'https://media.giphy.com/media/d4jBk4fb84sTyRmtxt/giphy.gif',
+];
 
 
 function App() {
 
   //state
   const [inputText, setInputText] = useState("");
+  const [itemText, setItemText] = useState("");
   const [todos, setTodos] = useState([]);
   const [status, setStatus] = useState('all');
   const [filteredTodos, setFilteredTodos] = useState([]);
+  const [list, setList] = useState("");
+  const [itemList, setItemList] = useState([]);
 
-  //GIF
-  const GIF = [
-    'https://media.giphy.com/media/d4jBk4fb84sTyRmtxt/giphy.gif',
-    ];
 
   //wallet
   const [walletAddress, setWalletAddress] = useState(null);
@@ -104,6 +110,21 @@ function App() {
         setTodos={setTodos} 
         todos={todos}
         filteredTodos = {filteredTodos}
+        />
+        <Item 
+        todos={todos} 
+        setTodos={setTodos} 
+        itemText={itemText} 
+        setItemText={setItemText}
+        setStatus = {setStatus}
+        list = {list}
+        setList = {setList}
+        itemList = {itemList}
+        setItemList = {setItemList} 
+        />
+        <ItemList 
+        itemList = {itemList}
+        setItemList = {setItemList} 
         />
     </div>
     );

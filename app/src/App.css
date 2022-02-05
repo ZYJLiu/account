@@ -84,6 +84,7 @@ form button:hover {
 }
 .todo-item {
   padding: 0rem 0.5rem;
+  /* white-space: pre-line; */
 }
 
 .fa-trash,
@@ -286,8 +287,13 @@ select {
   border: none;
   border-radius: 10px;
   margin: 50px auto;
+  placeholder: white;
 }
 
 .connected-container button {
   height: 50px;
+}
+
+::placeholder{
+  color: #14F195;
 }

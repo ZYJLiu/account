@@ -332,7 +332,7 @@ const App = () => {
           {/* We just need to add the inverse here! */}
           {walletAddress && renderConnectedContainer()} 
         </div>
-        {/* <div className="footer-container">
+        <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a
             className="footer-text"
@@ -340,7 +340,7 @@ const App = () => {
             target="_blank"
             rel="noreferrer"
           >{`🤪${TWITTER_HANDLE}`}</a>
-        </div> */}
+        </div>
       </div>
     </div>
   );

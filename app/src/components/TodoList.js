@@ -4,7 +4,7 @@ import Todo from './Todo'
 
 
 const TodoList = ({todos, setTodos, filteredTodos}) =>{
-    console.log(todos);
+    // console.log(todos);
     return (
         <div className="todo-container">
             <ul className="todo-list">
@@ -12,7 +12,9 @@ const TodoList = ({todos, setTodos, filteredTodos}) =>{
                     <Todo 
                         setTodos={setTodos} 
                         todos={todos} 
-                        key={todo.id} 
+                        key={todo.id}
+                        id={todo.id} 
+                        lines={todo.lines}
                         text={todo.text}
                         todo={todo}/>
                 ))}
