@@ -45,8 +45,8 @@ const Form = ({inputText, setInputText, todos, setTodos, setStatus}) => {
         try {
           const provider = getProvider();
           const program = new Program(idl, programID, provider);
-          console.log(provider.wallet.publicKey.toString())
-          console.log("ping")
+          // console.log(provider.wallet.publicKey.toString())
+          // console.log("ping")
           
     
           const name = inputText
@@ -57,8 +57,8 @@ const Form = ({inputText, setInputText, todos, setTodos, setStatus}) => {
             name.slice(0, 32)
           ], program.programId);
     
-          console.log(listAccount.toString())
-          console.log("Created a new Account w/ address:", listAccount.toString())
+          // console.log(listAccount.toString())
+          // console.log("Created a new Account w/ address:", listAccount.toString())
       
           await program.rpc.createList(name, capacity, bump,{
             accounts: {
@@ -70,10 +70,10 @@ const Form = ({inputText, setInputText, todos, setTodos, setStatus}) => {
           });
    
           // console.log(listAccount.toString())
-          console.log("Created a new BaseAccount w/ address:", listAccount.toString())
+          // console.log("Created a new BaseAccount w/ address:", listAccount.toString())
           let list = await program.account.list.fetch(listAccount);
-          console.log(list.name)
-          console.log(list.owner)
+          // console.log(list.name)
+          // console.log(list.owner)
           // console.log(baseAccount.toString())
           // let account = await program.account.list.fetch(baseAccount);
           // console.log(account)

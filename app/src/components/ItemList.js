@@ -3,15 +3,32 @@ import React from 'react';
 import Item from './Item'
 
 
-const ItemList = ({itemList, setItemList}) =>{
-    console.log(itemList);
+const ItemList = ({itemList, setItemList, list, todos, filteredItems, setFilteredItems}) =>{
+    // console.log(itemList);
+    // console.log(list)
+
+    // let listkey = todos.find(todo => {
+    //     if (list ===  todo.text) return todo;
+    // } );
+    //   console.log(listkey.id)
+
+    // const setFilteredItems(itemList.map(item => {
+    //     if(item.list === listkey.id)
+    //     return item;
+    // }))
+
+
     return (
         <div className="todo-container">
             <ul className="todo-list">
                 <div className="todo">
                     <li className="todo-item">
-                        {itemList.map((itemList) => <option key={itemList.id}> name: {itemList.name} - amount: {itemList.amount.toNumber()}</option>)}
+                        {filteredItems.map((itemList) => <option key={itemList.id}> Item: {itemList.name}</option>)}
                     </li>
+{/*                     
+                    <li className="todo-item">
+                        {itemList.map((itemList) => <option key={itemList.id}> Amount: {itemList.amount.toNumber()}</option>)}
+                    </li> */}
                 </div>
             </ul>
         </div>

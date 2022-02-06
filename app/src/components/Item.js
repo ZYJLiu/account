@@ -12,7 +12,7 @@ import idl from './idl.json';
 import { Buffer } from 'buffer';
 window.Buffer = Buffer;
 
-const Item = ({itemText, setItemText, todos, setTodos, setStatus, list, setList, itemList, setItemList}) => {
+const Item = ({itemText, setItemText, todos, setTodos, setStatus, list, setList, itemList, setItemList, setFilteredItems, itemStatus, setItemStatus}) => {
 
         //SOLANA
     // SystemProgram is a reference to the Solana runtime!
@@ -57,8 +57,8 @@ const Item = ({itemText, setItemText, todos, setTodos, setStatus, list, setList,
           } );
 
         //   console.log(listkey.id.toString())
-          console.log(listkey)
-          console.log(listkey.owner.toString())
+          // console.log(listkey)
+          // console.log(listkey.owner.toString())
 
         //   console.log(provider.wallet)
 
@@ -82,15 +82,15 @@ const Item = ({itemText, setItemText, todos, setTodos, setStatus, list, setList,
           });
 
           let item = await program.account.dataAccount.fetch(itemAccount.publicKey);
-          console.log(item)
-          console.log(item.amount)
+          // console.log(item.creator.toString())
+          // console.log(item.amount)
 
 
           setItemList([
-            ...itemList, {creator: item.creator, name: item.name, amount: item.amount, id:itemAccount.publicKey} //change ID to PDA
+            ...itemList, {creator: item.creator, name: item.name, amount: item.amount, id:itemAccount.publicKey, list:listkey.id} //change ID to PDA
         ]);
         
-        console.log(itemList)
+        // console.log(itemList)
     
 
         //   // console.log(listAccount.toString())
@@ -116,19 +116,7 @@ const Item = ({itemText, setItemText, todos, setTodos, setStatus, list, setList,
 
       }
 
-
-
-
-    // const submitTodoHandler = (e) => {
-    //     e.preventDefault();
-    //     setTodos([
-    //         ...todos, {text: itemText, completed: false, id: Math.random()*1000} //change ID to PDA
-    //     ]);
-    //     setitemText("");
-
-    // };
-
-
+    
 
 
 
@@ -141,10 +129,33 @@ const Item = ({itemText, setItemText, todos, setTodos, setStatus, list, setList,
     };
 
 
+
+    // const name = list
+    // let listkey = todos.find(todo => {
+    //     if (name ===  todo.text) return todo;
+    // } );
+
     const statusHandler = (e) => {
         setStatus(e.target.value);
         setList(e.target.value);
+        setItemStatus(e.target.value)
         console.log(e.target.value)
+
+        // const name = (e.target.value)
+        // console.log(name)
+        // let listkey = todos.find(todo => {
+        //     if (name ===  todo.text) return todo;
+        // } );
+        // setItemStatus(listkey.id);
+        // console.log("list id " + listkey.id)
+
+        // setFilteredItems(itemList.map(item => {
+        //   if(item.list === listkey.id)
+        //   return item;
+        //  }))
+  
+  
+        // console.log(e.target.value)
     };
 
     return(
@@ -161,7 +172,7 @@ const Item = ({itemText, setItemText, todos, setTodos, setStatus, list, setList,
             </button>
             <div className="select">
             <select onChange={statusHandler} name="todos" className="filter-todo">
-                <option value="Select Account">  Select Account</option>
+                <option value="All">Select Account</option>
                 {todos.map((todo) => <option key={todo.id}>{todo.text}</option>)}
             </select>
             </div>

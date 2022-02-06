@@ -25,6 +25,8 @@ function App() {
   const [filteredTodos, setFilteredTodos] = useState([]);
   const [list, setList] = useState("");
   const [itemList, setItemList] = useState([]);
+  const [itemStatus, setItemStatus] = useState("");
+  const [filteredItems, setFilteredItems] = useState([]);
 
 
   //wallet
@@ -121,10 +123,16 @@ function App() {
         setList = {setList}
         itemList = {itemList}
         setItemList = {setItemList} 
+        setFilteredItems = {setFilteredItems}  
+        setItemStatus = {setItemStatus}
         />
         <ItemList 
         itemList = {itemList}
-        setItemList = {setItemList} 
+        setItemList = {setItemList}
+        filteredItems = {filteredItems}
+        setFilteredItems = {setFilteredItems}  
+        list = {list}
+        todos = {todos}
         />
     </div>
     );
@@ -166,6 +174,33 @@ function App() {
         setFilteredTodos(todos);
         break;
     }
+  }
+
+  useEffect(() => {
+    itemfilterHandler();
+    // saveLocalTodos();
+    console.log(itemStatus)
+  }, [itemStatus, itemList]); 
+
+  const itemfilterHandler = () => {
+
+    if (itemStatus == 'All') {
+      setFilteredItems(itemList)
+    }
+
+    else {
+      const name = list
+      let listkey = todos.find(todo => {
+          if (name ===  todo.text) return todo;
+      } );
+
+      console.log(listkey)
+      
+      setFilteredItems(itemList.filter(item => item.list == listkey.id));
+        
+      console.log(filteredItems)
+    }
+
   }
 
   //save to local
