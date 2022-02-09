@@ -7,6 +7,7 @@ import Form from "./components/Form";
 import TodoList from "./components/TodoList";
 import Item from "./components/Item";
 import ItemList from "./components/ItemList";
+import Pay from "./components/Pay";
 
 //navbar
 import Navbar from "./components/Navbar/Navbar.component";
@@ -99,6 +100,7 @@ function App() {
 
   const renderConnectedContainer = () => (
     <div className="connected-container">
+      <Pay />
       <Form
         todos={todos}
         setTodos={setTodos}
