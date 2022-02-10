@@ -6,7 +6,11 @@ import { Program, Provider, web3 } from "@project-serum/anchor";
 
 import idl from "./idl.json";
 
+import { useNotify } from "./notify";
+
 const Pay = () => {
+  const notify = useNotify();
+
   const BN = require("bn.js");
 
   //SOLANA
