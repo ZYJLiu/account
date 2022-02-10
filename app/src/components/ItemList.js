@@ -3,19 +3,6 @@ import React from "react";
 import Item from "./Item";
 
 const ItemList = ({ filteredItems }) => {
-  // console.log(itemList);
-  // console.log(list)
-
-  // let listkey = todos.find(todo => {
-  //     if (list ===  todo.text) return todo;
-  // } );
-  //   console.log(listkey.id)
-
-  // const setFilteredItems(itemList.map(item => {
-  //     if(item.list === listkey.id)
-  //     return item;
-  // }))
-
   return (
     <div className="todo-container">
       <ul className="todo-list">
