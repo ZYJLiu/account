@@ -12,6 +12,8 @@ const Pay = () => {
   const notify = useNotify();
 
   const BN = require("bn.js");
+  const anchor = require("@project-serum/anchor");
+  //   console.log(pubkey);
 
   //SOLANA
   // SystemProgram is a reference to the Solana runtime!
@@ -46,16 +48,14 @@ const Pay = () => {
     const provider = getProvider();
     const program = new Program(idl, programID, provider);
     console.log("ping");
-    // console.log(provider.wallet.publicKey.toString());
+    console.log(provider.wallet.publicKey.toString());
 
-    //4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2
-    // 2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs
     try {
-      await program.rpc.pay(new BN(1), {
+      await program.rpc.pay(new anchor.BN(1), {
         accounts: {
           item1: "4HxYGgMre7F5QtmdACPZoV6U8T8xowT5Qe9sgxPcWsnd",
           item2: "6ZEDarPhTmaXQ4KrVF6Mm1KKej1ypvp1zsCZbE56D3y3",
-          receiver: "2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs",
+          receiver: "4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2",
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId,
         },
@@ -67,7 +67,7 @@ const Pay = () => {
     let item = await program.account.dataAccount.fetch(
       "6ZEDarPhTmaXQ4KrVF6Mm1KKej1ypvp1zsCZbE56D3y3"
     );
-    console.log("Item Amount:", item.amount.toString());
+    console.log(item.amount.toString());
   };
 
   return (
@@ -80,7 +80,7 @@ const Pay = () => {
       }}
     >
       <button onClick={pay} className="complete-btn">
-        <i className="fas fa-smile"></i> Pay (1 SOL)
+        <i className="fas fa-smile"></i> Pay
       </button>
     </div>
   );
