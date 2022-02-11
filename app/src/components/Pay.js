@@ -1,7 +1,12 @@
 import React from "react";
 
 //solana
-import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
+import {
+  Connection,
+  PublicKey,
+  clusterApiUrl,
+  LAMPORTS_PER_SOL,
+} from "@solana/web3.js";
 import { Program, Provider, web3 } from "@project-serum/anchor";
 
 import idl from "./idl.json";
@@ -13,7 +18,7 @@ import "animate.css/animate.min.css";
 
 import logo from "../assets/pay2.svg";
 
-const Pay = () => {
+const Pay = ({ receiver, setReceiver }) => {
   const BN = require("bn.js");
   const anchor = require("@project-serum/anchor");
   //   console.log(pubkey);
@@ -56,9 +61,9 @@ const Pay = () => {
     try {
       await program.rpc.pay(new anchor.BN(1), {
         accounts: {
-          item1: "4HxYGgMre7F5QtmdACPZoV6U8T8xowT5Qe9sgxPcWsnd",
-          item2: "6ZEDarPhTmaXQ4KrVF6Mm1KKej1ypvp1zsCZbE56D3y3",
-          receiver: "2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs",
+          item1: "6ZEDarPhTmaXQ4KrVF6Mm1KKej1ypvp1zsCZbE56D3y3",
+          item2: "ALSE1mgYq5cmxe5jJD3R48xzsYqxU4M31TKKJhLDyC5L",
+          receiver: receiver.toString(),
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId,
         },
@@ -67,42 +72,103 @@ const Pay = () => {
       console.log("Error Pay:", error);
     }
 
+    //2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs
+
     let item = await program.account.dataAccount.fetch(
+      "ALSE1mgYq5cmxe5jJD3R48xzsYqxU4M31TKKJhLDyC5L"
+    );
+
+    let item2 = await program.account.dataAccount.fetch(
       "6ZEDarPhTmaXQ4KrVF6Mm1KKej1ypvp1zsCZbE56D3y3"
     );
+
+    let amount = item.amount.toString();
+    let amount2 = item2.amount.toString();
     console.log(item.amount.toString());
 
+    let connection = new web3.Connection(clusterApiUrl("devnet"));
+    const Key = new PublicKey("4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2");
+    const balance = await connection.getBalance(Key);
+    console.log(balance / LAMPORTS_PER_SOL);
+
     Store.addNotification({
-      title: "Success!",
-      message: "Sent 1 SOL",
+      title: "Beer",
+      message: "New Amount: " + amount2,
+      type: "warning",
+      insert: "top",
+      container: "top-right",
+      animationIn: ["animate__animated", "animate__backInRight"],
+      animationOut: ["animate__animated", "animate__fadeOut"],
+      dismiss: {
+        duration: 4000,
+        onScreen: true,
+        showIcon: true,
+      },
+    });
+
+    Store.addNotification({
+      title: "Coffee",
+      message: "New Amount: " + amount,
       type: "default",
       insert: "top",
       container: "top-right",
       animationIn: ["animate__animated", "animate__backInRight"],
       animationOut: ["animate__animated", "animate__fadeOut"],
       dismiss: {
-        duration: 2500,
+        duration: 3000,
         onScreen: true,
         showIcon: true,
       },
     });
+
+    Store.addNotification({
+      title: "Payment Success!",
+      message: "Receipent New Balance: " + balance / LAMPORTS_PER_SOL,
+      type: "success",
+      insert: "top",
+      container: "top-right",
+      animationIn: ["animate__animated", "animate__backInRight"],
+      animationOut: ["animate__animated", "animate__fadeOut"],
+      dismiss: {
+        duration: 2000,
+        onScreen: true,
+        showIcon: true,
+      },
+    });
+
+    setReceiver("");
+  };
+
+  const inputTextHandler = (e) => {
+    // console.log(e.target.value);
+    setReceiver(e.target.value);
+    // console.log(receiver);
   };
 
   return (
     <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "5vh",
-      }}
+    // style={{
+    //   display: "inline",
+    //   justifyContent: "center",
+    //   alignItems: "center",
+    //   height: "5vh",
+    // }}
     >
-      {" "}
       <ReactNotifications />
       <button onClick={pay} className="button">
         <img src={logo} />
         {/* <i className="fas fa-smile"></i> Pay (1 SOL) */}
       </button>
+      <form>
+        <input
+          value={receiver}
+          onChange={inputTextHandler}
+          type="text"
+          placeholder="Receipient"
+        />
+      </form>
+      <ul>4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2</ul>
+      <ul>2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs</ul>
     </div>
   );
 };

@@ -15,7 +15,7 @@ header {
 
 header,
 form {
-  min-height: 20vh;
+  min-height: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -224,11 +224,6 @@ select {
   padding-bottom: 15px;
 }
 
-.twitter-logo {
-  width: 35px;
-  height: 35px;
-}
-
 .footer-text {
   color: white;
   font-size: 16px;
@@ -263,7 +258,7 @@ select {
   display: inline-block;
   color: white;
   padding: 10px;
-  width: 50%;
+  width: 53%;
   height: 60px;
   font-size: 16px;
   box-sizing: border-box;
@@ -288,5 +283,6 @@ select {
 button {
   position: relative;
   background-color: black;
-  border-radius: 6px;
+  border-radius: 5px;
+  display: inline-block;
 }

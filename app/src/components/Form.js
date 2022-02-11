@@ -91,6 +91,7 @@ const Form = ({ inputText, setInputText, todos, setTodos, setStatus }) => {
   const inputTextHandler = (e) => {
     // console.log(e.target.value);
     setInputText(e.target.value);
+    console.log(inputText);
   };
 
   const statusHandler = (e) => {

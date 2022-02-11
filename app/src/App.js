@@ -32,6 +32,9 @@ function App() {
   //wallet
   const [walletAddress, setWalletAddress] = useState(null);
 
+  //pay
+  const [receiver, setReceiver] = useState("");
+
   //wallet stuff below
   /*
    * This function holds the logic for deciding if a Phantom Wallet is
@@ -99,7 +102,7 @@ function App() {
 
   const renderConnectedContainer = () => (
     <div className="connected-container">
-      <Pay />
+      <Pay receiver={receiver} setReceiver={setReceiver} />
       <Form
         todos={todos}
         setTodos={setTodos}
