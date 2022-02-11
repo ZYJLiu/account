@@ -44,7 +44,7 @@ form button:hover {
 }
 
 .todo-list {
-  min-width: 30%;
+  min-width: 25%;
   list-style: none;
 }
 
@@ -124,7 +124,7 @@ select {
   color: #9945ff;
   font-family: "Poppins", sans-serif;
   cursor: pointer;
-  width: 12rem;
+  width: 11rem;
 }
 /* Arrow */
 .select::after {
@@ -187,7 +187,7 @@ select {
   -webkit-text-fill-color: transparent;
 }
 
-.cta-button {
+/* .cta-button {
   height: 45px;
   border: 10;
   width: auto;
@@ -198,7 +198,7 @@ select {
   font-size: 20px;
   font-weight: bold;
   color: white;
-}
+} */
 
 .connect-wallet-button {
   background: -webkit-linear-gradient(bottom left, #14f195, #9945ff);
@@ -206,14 +206,14 @@ select {
   animation: gradient-animation 5s ease infinite;
 }
 
-.submit-gif-button {
+/* .submit-gif-button {
   background: -webkit-linear-gradient(left, #4e44ce, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
   margin-left: 10px;
-}
+} */
 
-.footer-container {
+/* .footer-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -222,7 +222,7 @@ select {
   bottom: 0;
   left: 0;
   padding-bottom: 15px;
-}
+} */
 
 .footer-text {
   color: white;
@@ -249,7 +249,7 @@ select {
 
 .gif-item img {
   width: 100%;
-  height: 300px;
+  height: 350px;
   border-radius: 10px;
   object-fit: cover;
 }
@@ -258,14 +258,14 @@ select {
   display: inline-block;
   color: white;
   padding: 10px;
-  width: 53%;
-  height: 60px;
-  font-size: 16px;
+  width: 30%;
+  height: 50px;
+  font-size: 18px;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.25);
   border: 5;
   border-radius: 10px;
-  margin: 50px auto;
+  margin: 20px auto;
 }
 
 .connected-container button {
