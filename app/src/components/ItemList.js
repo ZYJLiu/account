@@ -23,7 +23,7 @@ const ItemList = ({ filteredItems }) => {
           <li className="todo-item">
             {filteredItems.map((itemList) => (
               <option key={itemList.id}>
-                Amount: {itemList.amount.toNumber()}
+                {itemList.name} {"- "} Amount: {itemList.amount.toNumber()}
               </option>
             ))}
           </li>

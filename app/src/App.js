@@ -12,7 +12,6 @@ import Pay from "./components/Pay";
 //navbar
 import Navbar from "./components/Navbar/Navbar.component";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/";
 import About from "./pages/about";
 
 //GIF

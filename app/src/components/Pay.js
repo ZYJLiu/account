@@ -6,11 +6,14 @@ import { Program, Provider, web3 } from "@project-serum/anchor";
 
 import idl from "./idl.json";
 
-import { useNotify } from "./notify";
+//notification
+import { ReactNotifications, Store } from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+import "animate.css/animate.min.css";
+
+import logo from "../assets/pay2.svg";
 
 const Pay = () => {
-  const notify = useNotify();
-
   const BN = require("bn.js");
   const anchor = require("@project-serum/anchor");
   //   console.log(pubkey);
@@ -55,7 +58,7 @@ const Pay = () => {
         accounts: {
           item1: "4HxYGgMre7F5QtmdACPZoV6U8T8xowT5Qe9sgxPcWsnd",
           item2: "6ZEDarPhTmaXQ4KrVF6Mm1KKej1ypvp1zsCZbE56D3y3",
-          receiver: "4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2",
+          receiver: "2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs",
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId,
         },
@@ -68,6 +71,21 @@ const Pay = () => {
       "6ZEDarPhTmaXQ4KrVF6Mm1KKej1ypvp1zsCZbE56D3y3"
     );
     console.log(item.amount.toString());
+
+    Store.addNotification({
+      title: "Success!",
+      message: "Sent 1 SOL",
+      type: "default",
+      insert: "top",
+      container: "top-right",
+      animationIn: ["animate__animated", "animate__backInRight"],
+      animationOut: ["animate__animated", "animate__fadeOut"],
+      dismiss: {
+        duration: 2500,
+        onScreen: true,
+        showIcon: true,
+      },
+    });
   };
 
   return (
@@ -79,8 +97,11 @@ const Pay = () => {
         height: "5vh",
       }}
     >
-      <button onClick={pay} className="complete-btn">
-        <i className="fas fa-smile"></i> Pay
+      {" "}
+      <ReactNotifications />
+      <button onClick={pay} className="button">
+        <img src={logo} />
+        {/* <i className="fas fa-smile"></i> Pay (1 SOL) */}
       </button>
     </div>
   );
