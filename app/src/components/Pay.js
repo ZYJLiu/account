@@ -18,7 +18,7 @@ import "animate.css/animate.min.css";
 
 import logo from "../assets/pay2.svg";
 
-const Pay = ({ receiver, setReceiver }) => {
+const Pay = ({ receiver, setReceiver, filteredItems, setFilteredItems }) => {
   const BN = require("bn.js");
   const anchor = require("@project-serum/anchor");
   //   console.log(pubkey);
@@ -61,8 +61,8 @@ const Pay = ({ receiver, setReceiver }) => {
     try {
       await program.rpc.pay(new anchor.BN(1), {
         accounts: {
-          item1: "6ZEDarPhTmaXQ4KrVF6Mm1KKej1ypvp1zsCZbE56D3y3",
-          item2: "ALSE1mgYq5cmxe5jJD3R48xzsYqxU4M31TKKJhLDyC5L",
+          item1: "B6bQyCHerktUA3iQ5Uq3DeyuCESZFu2pacdhdBbG7PLT",
+          item2: "HTNW2X7zjxB1Fi1UT27VTBpxYLuUgAAypXGjeHAhwYXk",
           receiver: receiver.toString(),
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId,
@@ -74,17 +74,39 @@ const Pay = ({ receiver, setReceiver }) => {
 
     //2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs
 
-    let item = await program.account.dataAccount.fetch(
-      "ALSE1mgYq5cmxe5jJD3R48xzsYqxU4M31TKKJhLDyC5L"
+    const ItemKey1 = new PublicKey(
+      "B6bQyCHerktUA3iQ5Uq3DeyuCESZFu2pacdhdBbG7PLT"
+    );
+    const ItemKey2 = new PublicKey(
+      "HTNW2X7zjxB1Fi1UT27VTBpxYLuUgAAypXGjeHAhwYXk"
     );
 
-    let item2 = await program.account.dataAccount.fetch(
-      "6ZEDarPhTmaXQ4KrVF6Mm1KKej1ypvp1zsCZbE56D3y3"
+    const item1 = await program.account.dataAccount.fetch(
+      "B6bQyCHerktUA3iQ5Uq3DeyuCESZFu2pacdhdBbG7PLT"
     );
 
-    let amount = item.amount.toString();
+    const item2 = await program.account.dataAccount.fetch(
+      "HTNW2X7zjxB1Fi1UT27VTBpxYLuUgAAypXGjeHAhwYXk"
+    );
+
+    // TO FIX, REPLACING ALL ITEMS
+    setFilteredItems(
+      filteredItems.map((item) => {
+        if (item.id === ItemKey2) console.log(item.id);
+        return {
+          name: item2.name,
+          amount: item2.amount,
+        };
+        return item;
+      })-
+    );
+
+    // console.log(item);
+    console.log(filteredItems);
+
+    let amount = item1.amount.toString();
     let amount2 = item2.amount.toString();
-    console.log(item.amount.toString());
+    console.log(item2.amount.toString());
 
     let connection = new web3.Connection(clusterApiUrl("devnet"));
     const Key = new PublicKey("4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2");
@@ -92,7 +114,7 @@ const Pay = ({ receiver, setReceiver }) => {
     console.log(balance / LAMPORTS_PER_SOL);
 
     Store.addNotification({
-      title: "Beer",
+      title: "Item 2",
       message: "New Amount: " + amount2,
       type: "warning",
       insert: "top",
@@ -107,7 +129,7 @@ const Pay = ({ receiver, setReceiver }) => {
     });
 
     Store.addNotification({
-      title: "Coffee",
+      title: "Item 1",
       message: "New Amount: " + amount,
       type: "default",
       insert: "top",

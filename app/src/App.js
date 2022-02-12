@@ -102,7 +102,14 @@ function App() {
 
   const renderConnectedContainer = () => (
     <div className="connected-container">
-      <Pay receiver={receiver} setReceiver={setReceiver} />
+      <Pay
+        receiver={receiver}
+        setReceiver={setReceiver}
+        filteredItems={filteredItems}
+        setFilteredItems={setFilteredItems}
+        itemList={itemList}
+        setItemList={setItemList}
+      />
       <Form
         todos={todos}
         setTodos={setTodos}
@@ -111,6 +118,8 @@ function App() {
         setStatus={setStatus}
         setList={setList}
         setItemStatus={setItemStatus}
+        filteredItems={filteredItems}
+        setFilteredItems={setFilteredItems}
       />
       <TodoList
         setTodos={setTodos}

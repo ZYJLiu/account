@@ -13,12 +13,9 @@ const Item = ({
   itemText,
   setItemText,
   todos,
-  setStatus,
   list,
-  setList,
   itemList,
   setItemList,
-  setItemStatus,
 }) => {
   //SOLANA
   // SystemProgram is a reference to the Solana runtime!

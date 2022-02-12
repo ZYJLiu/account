@@ -13,7 +13,7 @@ const ItemFilter = ({ itemList, setItemList, item }) => {
     <div className="todo">
       <li className={`todo-item`}>
         <option key={item.id}>
-          {[item.name, " ", item.amount.toString()]}
+          Item: {item.name} {"-"} Amount: ${item.amount.toString()}
         </option>
       </li>
       <button onClick={deleteHandler} className="trash-btn">
