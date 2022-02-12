@@ -18,7 +18,14 @@ import "animate.css/animate.min.css";
 
 import logo from "../assets/pay2.svg";
 
-const Pay = ({ receiver, setReceiver, filteredItems, setFilteredItems }) => {
+const Pay = ({
+  receiver,
+  setReceiver,
+  filteredItems,
+  setFilteredItems,
+  itemList,
+  setItemList,
+}) => {
   const BN = require("bn.js");
   const anchor = require("@project-serum/anchor");
   //   console.log(pubkey);
@@ -58,11 +65,14 @@ const Pay = ({ receiver, setReceiver, filteredItems, setFilteredItems }) => {
     console.log("ping");
     console.log(provider.wallet.publicKey.toString());
 
+    const pub = "9qorrepBb16cRWp7FkNjRr4fbkj76hEwdgKayR4nEGpE";
+    const pub2 = "CekBU9DLMEMYMynyWVtd3dbM9kxvnzUja8oykwudk6Yb";
+
     try {
       await program.rpc.pay(new anchor.BN(1), {
         accounts: {
-          item1: "B6bQyCHerktUA3iQ5Uq3DeyuCESZFu2pacdhdBbG7PLT",
-          item2: "HTNW2X7zjxB1Fi1UT27VTBpxYLuUgAAypXGjeHAhwYXk",
+          item1: pub,
+          item2: pub2,
           receiver: receiver.toString(),
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId,
@@ -74,44 +84,52 @@ const Pay = ({ receiver, setReceiver, filteredItems, setFilteredItems }) => {
 
     //2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs
 
-    const ItemKey1 = new PublicKey(
-      "B6bQyCHerktUA3iQ5Uq3DeyuCESZFu2pacdhdBbG7PLT"
-    );
-    const ItemKey2 = new PublicKey(
-      "HTNW2X7zjxB1Fi1UT27VTBpxYLuUgAAypXGjeHAhwYXk"
-    );
+    const ItemKey1 = new PublicKey(pub);
+    const ItemKey2 = new PublicKey(pub2);
 
-    const item1 = await program.account.dataAccount.fetch(
-      "B6bQyCHerktUA3iQ5Uq3DeyuCESZFu2pacdhdBbG7PLT"
-    );
+    const item1 = await program.account.dataAccount.fetch(pub);
+    const item2 = await program.account.dataAccount.fetch(pub2);
 
-    const item2 = await program.account.dataAccount.fetch(
-      "HTNW2X7zjxB1Fi1UT27VTBpxYLuUgAAypXGjeHAhwYXk"
-    );
-
-    // TO FIX, REPLACING ALL ITEMS
-    setFilteredItems(
-      filteredItems.map((item) => {
-        if (item.id === ItemKey2) console.log(item.id);
-        return {
-          name: item2.name,
-          amount: item2.amount,
-        };
+    // UPDATE WORKING, BUT ONLY UPDATES ONE ITEM VALUE
+    setItemList(
+      itemList.map((item) => {
+        if (item.id.toString() === pub) {
+          return {
+            ...item,
+            amount: item1.amount,
+          };
+        }
         return item;
-      })-
+      })
     );
 
-    // console.log(item);
-    console.log(filteredItems);
+    // setItemList(
+    //   itemList.map((item) => {
+    //     if (item.id.toString() === pub2) {
+    //       return {
+    //         ...item,
+    //         amount: item2.amount,
+    //       };
+    //     }
+    //     return item;
+    //   })
+    // );
+
+    console.log("itemList[1] ", itemList[1].id.toString());
+    console.log("itemList[1] ", itemList[1]);
 
     let amount = item1.amount.toString();
     let amount2 = item2.amount.toString();
-    console.log(item2.amount.toString());
+    console.log("ItemKey1 toString ", ItemKey1.toString());
+    console.log("item1 ", item1);
+    console.log("item2 ", item2);
+    console.log("item1 amount ", item1.amount.toString());
+    console.log("item2 amount ", item2.amount.toString());
 
     let connection = new web3.Connection(clusterApiUrl("devnet"));
-    const Key = new PublicKey("4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2");
+    const Key = new PublicKey("2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs");
     const balance = await connection.getBalance(Key);
-    console.log(balance / LAMPORTS_PER_SOL);
+    console.log("Remaining SOL Balance ", balance / LAMPORTS_PER_SOL);
 
     Store.addNotification({
       title: "Item 2",
