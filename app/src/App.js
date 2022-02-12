@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 //import components
-import Form from "./components/Form";
-import TodoList from "./components/TodoList";
-import Item from "./components/Item";
+import Form from "./components/CreateList";
+import TodoList from "./components/AccountList";
+import Item from "./components/CreateItem";
 import ItemList from "./components/ItemList";
 import Pay from "./components/Pay";
 
@@ -22,7 +22,7 @@ function App() {
   const [inputText, setInputText] = useState("");
   const [itemText, setItemText] = useState("");
   const [todos, setTodos] = useState([]);
-  const [status, setStatus] = useState("all");
+  const [status, setStatus] = useState("All");
   const [filteredTodos, setFilteredTodos] = useState([]);
   const [list, setList] = useState("");
   const [itemList, setItemList] = useState([]);
@@ -109,6 +109,8 @@ function App() {
         inputText={inputText}
         setInputText={setInputText}
         setStatus={setStatus}
+        setList={setList}
+        setItemStatus={setItemStatus}
       />
       <TodoList
         setTodos={setTodos}
@@ -164,27 +166,26 @@ function App() {
 
   //functions
   const filterHandler = () => {
-    switch (status) {
-      case "completed":
-        setFilteredTodos(todos.filter((todo) => todo.completed == true));
-        break;
-      case "uncompleted":
-        setFilteredTodos(todos.filter((todo) => todo.completed == false));
-        break;
-      default:
-        setFilteredTodos(todos);
-        break;
+    if (status == "All") {
+      setFilteredTodos(todos);
+    } else {
+      const name = list;
+      setFilteredTodos(todos.filter((todo) => todo.text == name));
     }
   };
 
+  //runonce
+  useEffect(() => {
+    getLocalItems();
+  }, []);
+
   useEffect(() => {
     itemfilterHandler();
-    // saveLocalTodos();
-    console.log(itemStatus);
+    saveLocalItems();
   }, [itemStatus, itemList]);
 
   const itemfilterHandler = () => {
-    if (itemStatus == "All") {
+    if (status == "All") {
       setFilteredItems(itemList);
     } else {
       const name = list;
@@ -211,6 +212,20 @@ function App() {
     } else {
       let todolocal = JSON.parse(localStorage.getItem("todos"));
       setTodos(todolocal);
+    }
+  };
+
+  //save to local
+  const saveLocalItems = () => {
+    localStorage.setItem("items", JSON.stringify(itemList));
+  };
+
+  const getLocalItems = () => {
+    if (localStorage.getItem("items") === null) {
+      localStorage.setItem("items", JSON.stringify([]));
+    } else {
+      let todolocal = JSON.parse(localStorage.getItem("items"));
+      setItemList(todolocal);
     }
   };
 

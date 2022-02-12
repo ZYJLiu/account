@@ -9,7 +9,15 @@ import idl from "./idl.json";
 import { Buffer } from "buffer";
 window.Buffer = Buffer;
 
-const Form = ({ inputText, setInputText, todos, setTodos, setStatus }) => {
+const Form = ({
+  inputText,
+  setInputText,
+  todos,
+  setTodos,
+  setStatus,
+  setList,
+  setItemStatus,
+}) => {
   //SOLANA
   // SystemProgram is a reference to the Solana runtime!
   const { SystemProgram, Keypair } = web3;
@@ -37,6 +45,7 @@ const Form = ({ inputText, setInputText, todos, setTodos, setStatus }) => {
     return provider;
   };
 
+  //create new account
   const createAccount = async (e) => {
     e.preventDefault();
 
@@ -52,6 +61,7 @@ const Form = ({ inputText, setInputText, todos, setTodos, setStatus }) => {
         program.programId
       );
 
+      //create new List, calls createList function from Anchor program
       await program.rpc.createList(name, capacity, bump, {
         accounts: {
           list: listAccount, //
@@ -62,6 +72,7 @@ const Form = ({ inputText, setInputText, todos, setTodos, setStatus }) => {
 
       let list = await program.account.list.fetch(listAccount);
 
+      //stores list data in Todos array
       setTodos([
         ...todos,
         {
@@ -73,29 +84,24 @@ const Form = ({ inputText, setInputText, todos, setTodos, setStatus }) => {
         },
       ]);
     } catch (error) {
-      console.log("Error creating BaseAccount account:", error);
+      console.log("Error creating account:", error);
     }
 
+    //reset inputtext
     setInputText("");
   };
 
-  // const submitTodoHandler = (e) => {
-  //     e.preventDefault();
-  //     setTodos([
-  //         ...todos, {text: inputText, completed: false, id: Math.random()*1000} //change ID to PDA
-  //     ]);
-  //     setInputText("");
-
-  // };
-
+  //update inputText displayed while typing in text box
   const inputTextHandler = (e) => {
-    // console.log(e.target.value);
     setInputText(e.target.value);
     console.log(inputText);
   };
 
+  //update from dropdown menu selection
   const statusHandler = (e) => {
     setStatus(e.target.value);
+    setList(e.target.value);
+    setItemStatus(e.target.value);
     console.log(e.target.value);
   };
 
@@ -113,9 +119,10 @@ const Form = ({ inputText, setInputText, todos, setTodos, setStatus }) => {
       </button>
       <div className="select">
         <select onChange={statusHandler} name="todos" className="filter-todo">
-          <option value="all">All</option>
-          <option value="completed">Complete</option>
-          <option value="uncompleted">Uncomplete</option>
+          <option value="All">Select Account</option>
+          {todos.map((todo) => (
+            <option key={todo.id}>{todo.text}</option>
+          ))}
         </select>
       </div>
     </form>

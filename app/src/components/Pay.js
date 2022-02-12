@@ -123,7 +123,7 @@ const Pay = ({ receiver, setReceiver }) => {
 
     Store.addNotification({
       title: "Payment Success!",
-      message: "Receipent New Balance: " + balance / LAMPORTS_PER_SOL,
+      message: "Sent 1 Sol",
       type: "success",
       insert: "top",
       container: "top-right",
