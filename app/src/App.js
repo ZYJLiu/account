@@ -266,3 +266,10 @@ function App() {
 }
 
 export default App;
+
+// How to fetch all PDA existing accounts - need to update Anchor Program to have a "close account" instruction
+// const list = await program.account.list.all();
+// console.log("All list", list);
+
+// const items = await program.account.dataAccount.all();
+// console.log("All item", items);

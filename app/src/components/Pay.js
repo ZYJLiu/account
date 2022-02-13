@@ -65,8 +65,8 @@ const Pay = ({
     console.log("ping");
     console.log(provider.wallet.publicKey.toString());
 
-    const pub = "9qorrepBb16cRWp7FkNjRr4fbkj76hEwdgKayR4nEGpE";
-    const pub2 = "CekBU9DLMEMYMynyWVtd3dbM9kxvnzUja8oykwudk6Yb";
+    const pub2 = "J7U25ESC5ahUrYYdoHJvjv2BvCuKA9WitwZ5cgJ1CAhD";
+    const pub = "84gwQnfpN5QKzoP1ArS8gPdegNTshyhE3hVquCJAC1nA";
 
     try {
       await program.rpc.pay(new anchor.BN(1), {
@@ -90,9 +90,15 @@ const Pay = ({
     const item1 = await program.account.dataAccount.fetch(pub);
     const item2 = await program.account.dataAccount.fetch(pub2);
 
-    // UPDATE WORKING, BUT ONLY UPDATES ONE ITEM VALUE
+    //Increment respecting account amounts
     setItemList(
       itemList.map((item) => {
+        if (item.id.toString() === pub2) {
+          return {
+            ...item,
+            amount: item2.amount,
+          };
+        }
         if (item.id.toString() === pub) {
           return {
             ...item,
@@ -102,18 +108,6 @@ const Pay = ({
         return item;
       })
     );
-
-    // setItemList(
-    //   itemList.map((item) => {
-    //     if (item.id.toString() === pub2) {
-    //       return {
-    //         ...item,
-    //         amount: item2.amount,
-    //       };
-    //     }
-    //     return item;
-    //   })
-    // );
 
     console.log("itemList[1] ", itemList[1].id.toString());
     console.log("itemList[1] ", itemList[1]);
