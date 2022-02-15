@@ -134,7 +134,7 @@ const Pay = ({
       animationIn: ["animate__animated", "animate__backInRight"],
       animationOut: ["animate__animated", "animate__fadeOut"],
       dismiss: {
-        duration: 4000,
+        duration: 5000,
         onScreen: true,
         showIcon: true,
       },
@@ -149,7 +149,7 @@ const Pay = ({
       animationIn: ["animate__animated", "animate__backInRight"],
       animationOut: ["animate__animated", "animate__fadeOut"],
       dismiss: {
-        duration: 3000,
+        duration: 4000,
         onScreen: true,
         showIcon: true,
       },
@@ -164,7 +164,7 @@ const Pay = ({
       animationIn: ["animate__animated", "animate__backInRight"],
       animationOut: ["animate__animated", "animate__fadeOut"],
       dismiss: {
-        duration: 2000,
+        duration: 3000,
         onScreen: true,
         showIcon: true,
       },

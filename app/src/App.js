@@ -8,6 +8,8 @@ import TodoList from "./components/AccountList";
 import Item from "./components/CreateItem";
 import ItemList from "./components/ItemList";
 import Pay from "./components/Pay";
+import Calculation from "./components/Calculation";
+import AccountItemTable from "./components/AccountItemTable";
 
 //navbar
 import Navbar from "./components/Navbar/Navbar.component";
@@ -28,6 +30,7 @@ function App() {
   const [itemList, setItemList] = useState([]);
   const [itemStatus, setItemStatus] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
+  const [calculate, setCalculate] = useState("");
 
   //wallet
   const [walletAddress, setWalletAddress] = useState(null);
@@ -147,6 +150,8 @@ function App() {
         list={list}
         todos={todos}
       />
+      <AccountItemTable todos={todos} itemList={itemList} />
+      {/* <Calculation calculate={calculate} setCalculate={setCalculate} /> */}
     </div>
   );
 

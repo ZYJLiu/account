@@ -107,6 +107,14 @@ const Form = ({
 
   return (
     <form>
+      <div className="select">
+        <select onChange={statusHandler} name="todos" className="filter-todo">
+          <option value="All">Select Account</option>
+          {todos.map((todo) => (
+            <option key={todo.id}>{todo.text}</option>
+          ))}
+        </select>
+      </div>
       <input
         value={inputText}
         onChange={inputTextHandler}
@@ -117,14 +125,6 @@ const Form = ({
       <button onClick={createAccount} className="todo-button" type="submit">
         <i className="fas fa-plus-square"></i>
       </button>
-      <div className="select">
-        <select onChange={statusHandler} name="todos" className="filter-todo">
-          <option value="All">Select Account</option>
-          {todos.map((todo) => (
-            <option key={todo.id}>{todo.text}</option>
-          ))}
-        </select>
-      </div>
     </form>
   );
 };

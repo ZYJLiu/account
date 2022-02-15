@@ -4,9 +4,6 @@ const ItemFilter = ({ itemList, setItemList, item }) => {
   //events
   const deleteHandler = () => {
     setItemList(itemList.filter((el) => el.id !== item.id));
-    console.log(item);
-    console.log(item.id.toString());
-    console.log(item.amount);
   };
 
   return (
