@@ -4,7 +4,7 @@ import React from "react";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { Program, Provider, web3 } from "@project-serum/anchor";
 
-import idl from "./idl.json";
+import idl from "../idl.json";
 
 import { Buffer } from "buffer";
 window.Buffer = Buffer;

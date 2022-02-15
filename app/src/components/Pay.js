@@ -65,8 +65,8 @@ const Pay = ({
     console.log("ping");
     console.log(provider.wallet.publicKey.toString());
 
-    const pub2 = "J7U25ESC5ahUrYYdoHJvjv2BvCuKA9WitwZ5cgJ1CAhD";
-    const pub = "84gwQnfpN5QKzoP1ArS8gPdegNTshyhE3hVquCJAC1nA";
+    const pub2 = "ANmS1W8bJbn3dSjVUJPakFMvVxq9HZXLVHafxB4sUQiD";
+    const pub = "EhjUmMY1wmcxZq4fwRxZUb3HHuQQ3vSLAe78tvmioTuM";
 
     try {
       await program.rpc.pay(new anchor.BN(1), {

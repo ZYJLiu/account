@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 //import components
-import Form from "./components/CreateList";
-import TodoList from "./components/AccountList";
-import Item from "./components/CreateItem";
-import ItemList from "./components/ItemList";
+import Form from "./components/List/CreateList";
+import TodoList from "./components/List/AccountList";
+import Item from "./components/Item/CreateItem";
+import ItemList from "./components/Item/ItemList";
 import Pay from "./components/Pay";
 import AccountItemTable from "./components/AccountItemTable";
 
@@ -148,6 +148,9 @@ function App() {
         list={list}
         todos={todos}
       />
+      <header>
+        <h1>Table</h1>
+      </header>
       <AccountItemTable todos={todos} itemList={itemList} />
     </div>
   );
