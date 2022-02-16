@@ -29,6 +29,7 @@ function App() {
   const [itemList, setItemList] = useState([]);
   const [itemStatus, setItemStatus] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
+  const [total, setTotal] = useState(0);
 
   //wallet
   const [walletAddress, setWalletAddress] = useState(null);
@@ -111,6 +112,15 @@ function App() {
         itemList={itemList}
         setItemList={setItemList}
       />
+      <header>
+        <h1>Table</h1>
+      </header>
+      <AccountItemTable
+        todos={todos}
+        itemList={itemList}
+        total={total}
+        setTotal={setTotal}
+      />
       <Form
         todos={todos}
         setTodos={setTodos}
@@ -148,10 +158,6 @@ function App() {
         list={list}
         todos={todos}
       />
-      <header>
-        <h1>Table</h1>
-      </header>
-      <AccountItemTable todos={todos} itemList={itemList} />
     </div>
   );
 

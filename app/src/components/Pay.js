@@ -65,8 +65,15 @@ const Pay = ({
     console.log("ping");
     console.log(provider.wallet.publicKey.toString());
 
-    const pub2 = "ANmS1W8bJbn3dSjVUJPakFMvVxq9HZXLVHafxB4sUQiD";
-    const pub = "EhjUmMY1wmcxZq4fwRxZUb3HHuQQ3vSLAe78tvmioTuM";
+    let connection = new web3.Connection(clusterApiUrl("devnet"));
+    const Key = new PublicKey("2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs");
+    const balance = Math.round(
+      (await connection.getBalance(Key)) / LAMPORTS_PER_SOL
+    );
+    console.log("Remaining SOL Balance ", balance / LAMPORTS_PER_SOL);
+
+    const pub = "DVzQNPYtJM5ExgbeaYKskvwNMVoiVsEGtpd8bV7hAFB7";
+    const pub2 = "GBX5fv7wfZQ33yRwmzhDiCwHWbJ25MuSVV79QsdHJZai";
 
     try {
       await program.rpc.pay(new anchor.BN(1), {
@@ -102,28 +109,23 @@ const Pay = ({
         if (item.id.toString() === pub) {
           return {
             ...item,
-            amount: item1.amount,
+            amount: balance,
           };
         }
         return item;
       })
     );
 
-    console.log("itemList[1] ", itemList[1].id.toString());
-    console.log("itemList[1] ", itemList[1]);
+    // console.log("itemList[1] ", itemList[1].id.toString());
+    // console.log("itemList[1] ", itemList[1]);
 
     let amount = item1.amount.toString();
     let amount2 = item2.amount.toString();
-    console.log("ItemKey1 toString ", ItemKey1.toString());
-    console.log("item1 ", item1);
-    console.log("item2 ", item2);
-    console.log("item1 amount ", item1.amount.toString());
-    console.log("item2 amount ", item2.amount.toString());
-
-    let connection = new web3.Connection(clusterApiUrl("devnet"));
-    const Key = new PublicKey("2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs");
-    const balance = await connection.getBalance(Key);
-    console.log("Remaining SOL Balance ", balance / LAMPORTS_PER_SOL);
+    // console.log("ItemKey1 toString ", ItemKey1.toString());
+    // console.log("item1 ", item1);
+    // console.log("item2 ", item2);
+    // console.log("item1 amount ", item1.amount.toString());
+    // console.log("item2 amount ", item2.amount.toString());
 
     Store.addNotification({
       title: "Item 2",
@@ -142,7 +144,7 @@ const Pay = ({
 
     Store.addNotification({
       title: "Item 1",
-      message: "New Amount: " + amount,
+      message: "New Amount: " + balance,
       type: "default",
       insert: "top",
       container: "top-right",

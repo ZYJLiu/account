@@ -15,7 +15,9 @@ import {
 } from "@solana/web3.js";
 import { FC, useCallback } from "react";
 
-const About = ({ pubkey }) => {
+import AccountItemTable from "../components/AccountItemTable";
+
+const About = ({ pubkey, todos, itemList, total, setTotal }) => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
 
