@@ -8,6 +8,7 @@ import TodoList from "./components/List/AccountList";
 import Item from "./components/Item/CreateItem";
 import ItemList from "./components/Item/ItemList";
 import Pay from "./components/Pay";
+import Receive from "./components/Receive";
 import AccountItemTable from "./components/AccountItemTable";
 
 //navbar
@@ -104,6 +105,14 @@ function App() {
 
   const renderConnectedContainer = () => (
     <div className="connected-container">
+      <Receive
+        receiver={receiver}
+        setReceiver={setReceiver}
+        filteredItems={filteredItems}
+        setFilteredItems={setFilteredItems}
+        itemList={itemList}
+        setItemList={setItemList}
+      />
       <Pay
         receiver={receiver}
         setReceiver={setReceiver}

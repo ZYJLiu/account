@@ -16,7 +16,7 @@ import { ReactNotifications, Store } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import "animate.css/animate.min.css";
 
-import logo from "../assets/pay2.svg";
+import logo from "../assets/pay.svg";
 
 const Pay = ({
   receiver,
@@ -73,15 +73,15 @@ const Pay = ({
     console.log("Remaining SOL Balance ", balance / LAMPORTS_PER_SOL);
 
     const pub = "DVzQNPYtJM5ExgbeaYKskvwNMVoiVsEGtpd8bV7hAFB7";
-    const pub2 = "GBX5fv7wfZQ33yRwmzhDiCwHWbJ25MuSVV79QsdHJZai";
+    const pub2 = "ANmS1W8bJbn3dSjVUJPakFMvVxq9HZXLVHafxB4sUQiD";
 
     try {
-      await program.rpc.pay(new anchor.BN(1), {
+      await program.rpc.receive(new anchor.BN(1), {
         accounts: {
           item1: pub,
           item2: pub2,
-          receiver: receiver.toString(),
-          user: provider.wallet.publicKey,
+          payer: provider.wallet.publicKey,
+          user: "2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs",
           systemProgram: SystemProgram.programId,
         },
       });
@@ -109,7 +109,7 @@ const Pay = ({
         if (item.id.toString() === pub) {
           return {
             ...item,
-            amount: balance,
+            amount: (amount += 1),
           };
         }
         return item;
@@ -173,14 +173,13 @@ const Pay = ({
     });
 
     setReceiver("");
-    console.log(itemList);
   };
 
-  const inputTextHandler = (e) => {
-    // console.log(e.target.value);
-    setReceiver(e.target.value);
-    // console.log(receiver);
-  };
+  // const inputTextHandler = (e) => {
+  //   // console.log(e.target.value);
+  //   setReceiver(e.target.value);
+  //   // console.log(receiver);
+  // };
 
   return (
     <div
@@ -196,7 +195,7 @@ const Pay = ({
         <img src={logo} />
         {/* <i className="fas fa-smile"></i> Pay (1 SOL) */}
       </button>
-      <form>
+      {/* <form>
         <input
           value={receiver}
           onChange={inputTextHandler}
@@ -205,7 +204,7 @@ const Pay = ({
         />
       </form>
       <ul>4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2</ul>
-      <ul>2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs</ul>
+      <ul>2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs</ul> */}
     </div>
   );
 };
