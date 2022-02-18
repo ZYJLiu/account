@@ -57,6 +57,57 @@ const Pay = ({
     return provider;
   };
 
+  const cancel = async (e) => {
+    e.preventDefault();
+
+    const provider = getProvider();
+    const program = new Program(idl, programID, provider);
+    console.log("ping");
+    console.log(provider.wallet.publicKey.toString());
+
+    const list = await program.account.list.all();
+    console.log("All list", list);
+
+    const items = await program.account.dataAccount.all();
+    console.log("All item", items);
+
+    //CLOSE ALL LIST ACCOUNTS
+    for (var i = 0; i < list.length; i++) {
+      await program.rpc.cancellist(list[i].account.name, {
+        accounts: {
+          list: list[i].publicKey,
+          owner: list[i].account.owner,
+          itemCreator: provider.wallet.publicKey,
+          user: provider.wallet.publicKey,
+        },
+      });
+    }
+
+    // await program.rpc.cancel(list[i].account.name, {
+    //   accounts: {
+    //     list: list[i].publicKey,
+    //     owner: list[i].account.owner,
+    //     item: item.publicKey,
+    //     itemCreator: provider.wallet.publicKey,
+    //     user: provider.wallet.publicKey,
+    //   },
+    // });
+
+    // console.log(names);
+
+    // for (const account in list) {
+    //   console.log(account);
+    // }
+
+    // for (const item in items) {
+    //   console.log(item);
+    // }
+
+    // for (const item of items) {
+    //   console.log(item);
+    // }
+  };
+
   const pay = async (e) => {
     e.preventDefault();
 
@@ -210,6 +261,13 @@ const Pay = ({
       </form>
       <ul>Vendor Pubkey: 4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2</ul>
       <ul>Business Pubkey: 2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs</ul>
+
+      <button onClick={cancel} className="cta-button">
+        Close Accounts
+      </button>
+      <button onClick={cancel} className="cta-button">
+        Close Items
+      </button>
     </div>
   );
 };

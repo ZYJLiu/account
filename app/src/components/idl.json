@@ -1,207 +1,274 @@
 {
-    "version": "0.1.0",
-    "name": "anchor",
-    "instructions": [
-      {
-        "name": "createList",
-        "accounts": [
+  "version": "0.1.0",
+  "name": "anchor",
+  "instructions": [
+    {
+      "name": "createList",
+      "accounts": [
+        {
+          "name": "list",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "capacity",
+          "type": "u16"
+        },
+        {
+          "name": "accountBump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "addItem",
+      "accounts": [
+        {
+          "name": "list",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "item",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "listName",
+          "type": "string"
+        },
+        {
+          "name": "itemName",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "cancel",
+      "accounts": [
+        {
+          "name": "list",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "item",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "itemCreator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "listName",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "cancellist",
+      "accounts": [
+        {
+          "name": "list",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "itemCreator",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "listName",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "receive",
+      "accounts": [
+        {
+          "name": "item1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "item2",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "pay",
+      "accounts": [
+        {
+          "name": "item1",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "item2",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "receiver",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "List",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            "name": "list",
-            "isMut": true,
-            "isSigner": false
+            "name": "owner",
+            "type": "publicKey"
           },
-          {
-            "name": "user",
-            "isMut": false,
-            "isSigner": true
-          },
-          {
-            "name": "systemProgram",
-            "isMut": false,
-            "isSigner": false
-          }
-        ],
-        "args": [
           {
             "name": "name",
             "type": "string"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           },
           {
             "name": "capacity",
             "type": "u16"
           },
           {
-            "name": "accountBump",
-            "type": "u8"
+            "name": "lines",
+            "type": {
+              "vec": "publicKey"
+            }
           }
         ]
-      },
-      {
-        "name": "addItem",
-        "accounts": [
+      }
+    },
+    {
+      "name": "DataAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            "name": "list",
-            "isMut": true,
-            "isSigner": false
+            "name": "creator",
+            "type": "publicKey"
           },
           {
-            "name": "owner",
-            "isMut": false,
-            "isSigner": false
-          },
-          {
-            "name": "item",
-            "isMut": true,
-            "isSigner": true
-          },
-          {
-            "name": "user",
-            "isMut": true,
-            "isSigner": true
-          },
-          {
-            "name": "systemProgram",
-            "isMut": false,
-            "isSigner": false
-          }
-        ],
-        "args": [
-          {
-            "name": "listName",
+            "name": "name",
             "type": "string"
           },
-          {
-            "name": "itemName",
-            "type": "string"
-          }
-        ]
-      },
-      {
-        "name": "receive",
-        "accounts": [
-          {
-            "name": "item1",
-            "isMut": true,
-            "isSigner": false
-          },
-          {
-            "name": "item2",
-            "isMut": true,
-            "isSigner": false
-          },
-          {
-            "name": "payer",
-            "isMut": true,
-            "isSigner": true
-          },
-          {
-            "name": "user",
-            "isMut": true,
-            "isSigner": false
-          },
-          {
-            "name": "systemProgram",
-            "isMut": false,
-            "isSigner": false
-          }
-        ],
-        "args": [
-          {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      },
-      {
-        "name": "pay",
-        "accounts": [
-          {
-            "name": "item1",
-            "isMut": true,
-            "isSigner": false
-          },
-          {
-            "name": "item2",
-            "isMut": true,
-            "isSigner": false
-          },
-          {
-            "name": "receiver",
-            "isMut": true,
-            "isSigner": false
-          },
-          {
-            "name": "user",
-            "isMut": true,
-            "isSigner": true
-          },
-          {
-            "name": "systemProgram",
-            "isMut": false,
-            "isSigner": false
-          }
-        ],
-        "args": [
           {
             "name": "amount",
             "type": "u64"
           }
         ]
       }
-    ],
-    "accounts": [
-      {
-        "name": "List",
-        "type": {
-          "kind": "struct",
-          "fields": [
-            {
-              "name": "owner",
-              "type": "publicKey"
-            },
-            {
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "name": "bump",
-              "type": "u8"
-            },
-            {
-              "name": "capacity",
-              "type": "u16"
-            },
-            {
-              "name": "lines",
-              "type": {
-                "vec": "publicKey"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "DataAccount",
-        "type": {
-          "kind": "struct",
-          "fields": [
-            {
-              "name": "creator",
-              "type": "publicKey"
-            },
-            {
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "name": "amount",
-              "type": "u64"
-            }
-          ]
-        }
-      }
-    ],
-    "metadata": {
-      "address": "4kiCL5ZnfTViX7WddCYvGMowULgkJNrnAAWRoz3JVT7e"
     }
+  ],
+  "metadata": {
+    "address": "4kiCL5ZnfTViX7WddCYvGMowULgkJNrnAAWRoz3JVT7e"
   }
+}

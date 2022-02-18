@@ -190,16 +190,17 @@ select {
 }
 
 .cta-button {
-  height: 45px;
-  border: 10;
+  height: 10px;
+  border: 5;
   width: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-  border-radius: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: bold;
   color: white;
+  background: #9945ff;
 }
 
 .connect-wallet-button {
@@ -294,6 +295,13 @@ button {
   display: flex;
   flex-flow: row;
   justify-content: center;
+  padding: 10px;
+}
+
+.row-button {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-evenly;
   padding: 10px;
 }
 

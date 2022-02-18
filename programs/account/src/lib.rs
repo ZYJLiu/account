@@ -65,6 +65,17 @@ pub mod anchor {
         Ok(())
     }
 
+    pub fn cancellist(
+        ctx: Context<CancelList>, 
+        _list_name: String) 
+        -> ProgramResult {
+        let list = &mut ctx.accounts.list;
+        let user = ctx.accounts.user.to_account_info().key;
+        let item_creator = &ctx.accounts.item_creator;
+        list.close(item_creator.to_account_info())?;
+        Ok(())
+    }
+
        pub fn receive(
         ctx: Context<Receive>,
         amount: u64,
@@ -215,6 +226,19 @@ pub struct Cancel<'info> {
     #[account(mut)]
     pub item: Account<'info, DataAccount>,
     #[account(mut, address=item.creator)]
+    pub item_creator: AccountInfo<'info>,
+    pub user: Signer<'info>,
+}
+
+//Close List
+#[derive(Accounts)]
+#[instruction(list_name: String)]
+pub struct CancelList<'info> {
+    #[account(mut, 
+      has_one=owner,
+      seeds=[b"list", owner.to_account_info().key.as_ref(), name_seed(&list_name)], bump=list.bump)]
+    pub list: Account<'info, List>,
+    pub owner: AccountInfo<'info>,
     pub item_creator: AccountInfo<'info>,
     pub user: Signer<'info>,
 }
