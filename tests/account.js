@@ -23,7 +23,7 @@ describe("Begin Test", () => {
 
   //"User" functions
   async function createUser(airdropBalance) {
-    airdropBalance = airdropBalance ?? 2 * LAMPORTS_PER_SOL;
+    airdropBalance = airdropBalance ?? 3 * LAMPORTS_PER_SOL;
     let user = anchor.web3.Keypair.generate();
     let sig = await provider.connection.requestAirdrop(
       user.publicKey,
@@ -117,6 +117,19 @@ describe("Begin Test", () => {
         data: itemData,
       },
     };
+  }
+
+  async function cancelItem({ list, item, itemCreator, user }) {
+    let program = programForUser(user);
+    await program.rpc.cancel(list.data.name, {
+      accounts: {
+        list: list.publicKey,
+        owner: list.data.owner,
+        item: item.publicKey,
+        itemCreator: itemCreator.key.publicKey,
+        user: user.key.publicKey,
+      },
+    });
   }
 
   ///TEST STARTS HERE
@@ -241,7 +254,7 @@ describe("Begin Test", () => {
     console.log(balance10);
 
     // Payment - User sends SOL to Receiver
-    const pay = await program.rpc.pay(BN(1), {
+    const pay = await program.rpc.pay(new anchor.BN(1), {
       accounts: {
         item1: cash.item.publicKey,
         item2: service.item.publicKey,
@@ -267,5 +280,48 @@ describe("Begin Test", () => {
       (await getAccountBalance(owner.key.publicKey)) / LAMPORTS_PER_SOL;
     console.log("Owner Ending Balance");
     console.log(balance5);
+  });
+
+  it("List owner can cancel an item", async () => {
+    const [owner, adder] = await createUsers(2);
+    const list = await createList(owner, "list");
+
+    const adderStartingBalance = await getAccountBalance(adder.key.publicKey);
+
+    const result = await addItem({
+      list,
+      user: adder,
+      bounty: LAMPORTS_PER_SOL,
+      name: "An item",
+    });
+
+    const adderBalanceAfterAdd = await getAccountBalance(adder.key.publicKey);
+
+    expect(result.list.data.lines, "Item is added to list").deep.equals([
+      result.item.publicKey,
+    ]);
+    expect(adderBalanceAfterAdd, "Bounty is removed from adder").lt(
+      adderStartingBalance
+    );
+
+    const cancelResult = await cancelItem({
+      list,
+      item: result.item,
+      itemCreator: adder,
+      user: owner,
+    });
+
+    const adderBalanceAfterCancel = await getAccountBalance(
+      adder.key.publicKey
+    );
+    // expectBalance(
+    //   adderBalanceAfterCancel,
+    //   adderBalanceAfterAdd + LAMPORTS_PER_SOL,
+    //   "Cancel returns bounty to adder"
+    // );
+    // expect(
+    //   cancelResult.list.data.lines,
+    //   "Cancel removes item from list"
+    // ).deep.equals([]);
   });
 });

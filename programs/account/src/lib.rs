@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use anchor_lang::AccountsClose;
 
 declare_id!("4kiCL5ZnfTViX7WddCYvGMowULgkJNrnAAWRoz3JVT7e");
 
@@ -34,6 +35,33 @@ pub mod anchor {
         item.creator = *user.to_account_info().key;
         item.name = item_name;
         
+        Ok(())
+    }
+
+    pub fn cancel(
+        ctx: Context<Cancel>, 
+        _list_name: String) 
+        -> ProgramResult {
+        let list = &mut ctx.accounts.list;
+        let item = &mut ctx.accounts.item;
+        let item_creator = &ctx.accounts.item_creator;
+    
+        let user = ctx.accounts.user.to_account_info().key;
+    
+        // if &list.list_owner != user && &item.creator != user {
+        //     return Err(TodoListError::CancelPermissions.into());
+        // }
+    
+        // if !list.lines.contains(item.to_account_info().key) {
+        //     return Err(TodoListError::ItemNotFound.into());
+        // }
+    
+        // Return the tokens to the item creator
+        item.close(item_creator.to_account_info())?;
+    
+        let item_key = ctx.accounts.item.to_account_info().key;
+        list.lines.retain(|key| key != item_key);
+    
         Ok(())
     }
 
@@ -92,6 +120,7 @@ pub mod anchor {
 
         Ok(())
     }
+
     
 }
 
@@ -172,6 +201,22 @@ impl DataAccount {
         // discriminator + name string + creator pubkey + amount?
         8 + 4 + name.len() + 32 + 8
     }
+}
+
+//Close Item Data Account
+#[derive(Accounts)]
+#[instruction(list_name: String)]
+pub struct Cancel<'info> {
+    #[account(mut, 
+      has_one=owner,
+      seeds=[b"list", owner.to_account_info().key.as_ref(), name_seed(&list_name)], bump=list.bump)]
+    pub list: Account<'info, List>,
+    pub owner: AccountInfo<'info>,
+    #[account(mut)]
+    pub item: Account<'info, DataAccount>,
+    #[account(mut, address=item.creator)]
+    pub item_creator: AccountInfo<'info>,
+    pub user: Signer<'info>,
 }
 
 

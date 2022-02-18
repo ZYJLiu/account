@@ -115,6 +115,7 @@ const Form = ({
           ))}
         </select>
       </div>
+      <ul>Create Account and Line Items Below</ul>
       <input
         value={inputText}
         onChange={inputTextHandler}

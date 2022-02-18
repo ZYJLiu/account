@@ -18,7 +18,7 @@ import "animate.css/animate.min.css";
 
 import logo from "../assets/pay.svg";
 
-const Pay = ({
+const Receive = ({
   receiver,
   setReceiver,
   filteredItems,
@@ -57,7 +57,7 @@ const Pay = ({
     return provider;
   };
 
-  const pay = async (e) => {
+  const receive = async (e) => {
     e.preventDefault();
 
     const provider = getProvider();
@@ -109,7 +109,7 @@ const Pay = ({
         if (item.id.toString() === pub) {
           return {
             ...item,
-            amount: (amount += 1),
+            amount: (item.amount += 1),
           };
         }
         return item;
@@ -191,22 +191,15 @@ const Pay = ({
     // }}
     >
       <ReactNotifications />
-      <button onClick={pay} className="button">
+      <ul>
+        This Buy Button Represents Customer Paying 1 SOL to Business Wallet
+      </ul>
+      <button onClick={receive} className="button">
         <img src={logo} />
         {/* <i className="fas fa-smile"></i> Pay (1 SOL) */}
       </button>
-      {/* <form>
-        <input
-          value={receiver}
-          onChange={inputTextHandler}
-          type="text"
-          placeholder="Receipient"
-        />
-      </form>
-      <ul>4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2</ul>
-      <ul>2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs</ul> */}
     </div>
   );
 };
 
-export default Pay;
+export default Receive;

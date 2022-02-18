@@ -121,52 +121,62 @@ function App() {
         itemList={itemList}
         setItemList={setItemList}
       />
-      <header>
-        <h1>Table</h1>
-      </header>
-      <AccountItemTable
-        todos={todos}
-        itemList={itemList}
-        total={total}
-        setTotal={setTotal}
-      />
-      <Form
-        todos={todos}
-        setTodos={setTodos}
-        inputText={inputText}
-        setInputText={setInputText}
-        setStatus={setStatus}
-        setList={setList}
-        setItemStatus={setItemStatus}
-        filteredItems={filteredItems}
-        setFilteredItems={setFilteredItems}
-      />
-      <TodoList
-        setTodos={setTodos}
-        todos={todos}
-        filteredTodos={filteredTodos}
-      />
-      <Item
-        todos={todos}
-        setTodos={setTodos}
-        itemText={itemText}
-        setItemText={setItemText}
-        setStatus={setStatus}
-        list={list}
-        setList={setList}
-        itemList={itemList}
-        setItemList={setItemList}
-        setFilteredItems={setFilteredItems}
-        setItemStatus={setItemStatus}
-      />
-      <ItemList
-        itemList={itemList}
-        setItemList={setItemList}
-        filteredItems={filteredItems}
-        setFilteredItems={setFilteredItems}
-        list={list}
-        todos={todos}
-      />
+
+      <div className="row">
+        <div className="left-colomn">
+          <h1>Income Statement</h1>
+          <AccountItemTable
+            todos={todos}
+            itemList={itemList}
+            total={total}
+            setTotal={setTotal}
+          />
+        </div>
+
+        <div>
+          <h1> </h1>
+        </div>
+
+        <div className="right-column">
+          <Form
+            todos={todos}
+            setTodos={setTodos}
+            inputText={inputText}
+            setInputText={setInputText}
+            setStatus={setStatus}
+            setList={setList}
+            setItemStatus={setItemStatus}
+            filteredItems={filteredItems}
+            setFilteredItems={setFilteredItems}
+          />
+          <TodoList
+            setTodos={setTodos}
+            todos={todos}
+            filteredTodos={filteredTodos}
+          />
+          <Item
+            todos={todos}
+            setTodos={setTodos}
+            itemText={itemText}
+            setItemText={setItemText}
+            setStatus={setStatus}
+            list={list}
+            setList={setList}
+            itemList={itemList}
+            setItemList={setItemList}
+            setFilteredItems={setFilteredItems}
+            setItemStatus={setItemStatus}
+          />
+          <ItemList
+            itemList={itemList}
+            setItemList={setItemList}
+            filteredItems={filteredItems}
+            setFilteredItems={setFilteredItems}
+            list={list}
+            todos={todos}
+          />
+        </div>
+      </div>
     </div>
   );
 

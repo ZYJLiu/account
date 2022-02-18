@@ -192,6 +192,10 @@ const Pay = ({
     // }}
     >
       <ReactNotifications />
+      <ul>
+        This Pay Button Represents Business Wallet Paying 1 SOL to a Vendor
+        Wallet
+      </ul>
       <button onClick={pay} className="button">
         <img src={logo} />
         {/* <i className="fas fa-smile"></i> Pay (1 SOL) */}
@@ -204,8 +208,8 @@ const Pay = ({
           placeholder="Receipient"
         />
       </form>
-      <ul>4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2</ul>
-      <ul>2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs</ul>
+      <ul>Vendor Pubkey: 4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2</ul>
+      <ul>Business Pubkey: 2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs</ul>
     </div>
   );
 };
