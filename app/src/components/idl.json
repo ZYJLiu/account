@@ -77,26 +77,16 @@
       ]
     },
     {
-      "name": "cancel",
+      "name": "cancelitem",
       "accounts": [
         {
-          "name": "list",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "owner",
+          "name": "item",
           "isMut": false,
           "isSigner": false
         },
         {
-          "name": "item",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "itemCreator",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -107,8 +97,8 @@
       ],
       "args": [
         {
-          "name": "listName",
-          "type": "string"
+          "name": "item",
+          "type": "publicKey"
         }
       ]
     },

@@ -57,7 +57,7 @@ const Pay = ({
     return provider;
   };
 
-  const cancel = async (e) => {
+  const closeAccount = async (e) => {
     e.preventDefault();
 
     const provider = getProvider();
@@ -67,9 +67,6 @@ const Pay = ({
 
     const list = await program.account.list.all();
     console.log("All list", list);
-
-    const items = await program.account.dataAccount.all();
-    console.log("All item", items);
 
     //CLOSE ALL LIST ACCOUNTS
     for (var i = 0; i < list.length; i++) {
@@ -82,30 +79,30 @@ const Pay = ({
         },
       });
     }
+  };
 
-    // await program.rpc.cancel(list[i].account.name, {
-    //   accounts: {
-    //     list: list[i].publicKey,
-    //     owner: list[i].account.owner,
-    //     item: item.publicKey,
-    //     itemCreator: provider.wallet.publicKey,
-    //     user: provider.wallet.publicKey,
-    //   },
-    // });
+  const closeItem = async (e) => {
+    e.preventDefault();
 
-    // console.log(names);
+    const provider = getProvider();
+    const program = new Program(idl, programID, provider);
+    console.log("ping");
+    console.log(provider.wallet.publicKey.toString());
 
-    // for (const account in list) {
-    //   console.log(account);
-    // }
+    const items = await program.account.dataAccount.all();
+    console.log("All item", items);
 
-    // for (const item in items) {
-    //   console.log(item);
-    // }
-
-    // for (const item of items) {
-    //   console.log(item);
-    // }
+    //Close All Item Accounts
+    for (var i = 0; i < items.length; i++) {
+      console.log(items[i].account.creator);
+      await program.rpc.cancelitem(provider.wallet.publicKey, {
+        accounts: {
+          item: items[i].publicKey,
+          itemCreator: provider.wallet.publicKey,
+          user: provider.wallet.publicKey,
+        },
+      });
+    }
   };
 
   const pay = async (e) => {
@@ -262,10 +259,10 @@ const Pay = ({
       <ul>Vendor Pubkey: 4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2</ul>
       <ul>Business Pubkey: 2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs</ul>
 
-      <button onClick={cancel} className="cta-button">
+      <button onClick={closeAccount} className="cta-button">
         Close Accounts
       </button>
-      <button onClick={cancel} className="cta-button">
+      <button onClick={closeItem} className="cta-button">
         Close Items
       </button>
     </div>
