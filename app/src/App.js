@@ -4,7 +4,6 @@ import "./App.css";
 
 //import components
 import Form from "./components/List/CreateList";
-import TodoList from "./components/List/AccountList";
 import Item from "./components/Item/CreateItem";
 import ItemList from "./components/Item/ItemList";
 import Pay from "./components/Pay";
@@ -15,6 +14,11 @@ import AccountItemTable from "./components/AccountItemTable";
 import Navbar from "./components/Navbar/Navbar.component";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./pages/about";
+
+//solana
+import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
+import { Program, Provider, web3 } from "@project-serum/anchor";
+import idl from "./components/idl.json";
 
 //GIF
 const GIF = ["https://media.giphy.com/media/d4jBk4fb84sTyRmtxt/giphy.gif"];
@@ -74,10 +78,6 @@ function App() {
     }
   };
 
-  /*
-   * Let's define this method so our code doesn't break.
-   * We will write the logic for this next!
-   */
   const connectWallet = async () => {
     const { solana } = window;
 
@@ -88,6 +88,56 @@ function App() {
     }
   };
 
+  const fetchAccounts = async () => {
+    //SOLANA
+    // SystemProgram is a reference to the Solana runtime!
+    const { SystemProgram, Keypair } = web3;
+
+    // Get our program's id from the IDL file.
+    const programID = new PublicKey(idl.metadata.address);
+
+    // Set our network to devnet.
+    const network = clusterApiUrl("devnet");
+
+    // Controls how we want to acknowledge when a transaction is "done".
+    const opts = {
+      preflightCommitment: "processed",
+    };
+
+    const getProvider = () => {
+      const connection = new Connection(network, opts.preflightCommitment);
+      const provider = new Provider(
+        connection,
+        window.solana,
+        opts.preflightCommitment
+      );
+      return provider;
+    };
+
+    const provider = getProvider();
+    const program = new Program(idl, programID, provider);
+    console.log("ping");
+
+    const list = await program.account.list.all();
+    console.log("All list", list);
+
+    const allAccounts = [];
+
+    for (var i = 0; i < list.length; i++) {
+      allAccounts.push({
+        name: list[i].account.name,
+        id: list[i].publicKey.toString(),
+        owner: list[i].account.owner.toString(),
+        lines: list[i].account.lines,
+      });
+    }
+
+    console.log("todos", allAccounts);
+
+    setTodos(allAccounts);
+  };
+
+  console.log("test", todos);
   /*
    * We want to render this UI when the user hasn't connected
    * their wallet to our app yet.
@@ -123,7 +173,7 @@ function App() {
       />
 
       <div className="row">
-        <div className="left-colomn">
+        <div>
           <h1>Income Statement</h1>
           <AccountItemTable
             todos={todos}
@@ -137,7 +187,7 @@ function App() {
           <h1> </h1>
         </div>
 
-        <div className="right-column">
+        <div>
           <Form
             todos={todos}
             setTodos={setTodos}
@@ -148,10 +198,6 @@ function App() {
             setItemStatus={setItemStatus}
             filteredItems={filteredItems}
             setFilteredItems={setFilteredItems}
-          />
-          <TodoList
-            setTodos={setTodos}
-            todos={todos}
             filteredTodos={filteredTodos}
           />
           <Item
@@ -187,6 +233,7 @@ function App() {
   useEffect(() => {
     const onLoad = async () => {
       await checkIfWalletIsConnected();
+      await fetchAccounts();
     };
     window.addEventListener("load", onLoad);
     return () => window.removeEventListener("load", onLoad);
@@ -209,7 +256,7 @@ function App() {
       setFilteredTodos(todos);
     } else {
       const name = list;
-      setFilteredTodos(todos.filter((todo) => todo.text == name));
+      setFilteredTodos(todos.filter((todo) => todo.name == name));
     }
   };
 
