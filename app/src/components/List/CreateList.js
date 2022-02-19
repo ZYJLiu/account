@@ -22,7 +22,7 @@ const Form = ({
 }) => {
   //SOLANA
   // SystemProgram is a reference to the Solana runtime!
-  const { SystemProgram, Keypair } = web3;
+  const { SystemProgram } = web3;
 
   // Get our program's id from the IDL file.
   const programID = new PublicKey(idl.metadata.address);
@@ -84,26 +84,6 @@ const Form = ({
 
     //reset input text
     setInputText("");
-
-    // const list = await program.account.list.all();
-    // console.log("All list", list);
-
-    // const allAccounts = [];
-
-    // for (var i = 0; i < list.length; i++) {
-    //   allAccounts.push({
-    //     name: list[i].account.name,
-    //     id: list[i].publicKey.toString(),
-    //     owner: list[i].account.owner.toString(),
-    //     lines: list[i].account.lines,
-    //   });
-    // }
-
-    // console.log("todos", allAccounts);
-
-    // setTodos((todos) => [todos, allAccounts]);
-
-    // console.log("test again", todos);
   };
 
   //update inputText displayed while typing in text box
@@ -112,7 +92,6 @@ const Form = ({
     console.log(inputText);
   };
 
-  //TODO FETCH ACCOUNTS FROM NETWORK
   //update from dropdown menu selection
   const statusHandler = (e) => {
     setStatus(e.target.value);

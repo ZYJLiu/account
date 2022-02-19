@@ -5,10 +5,10 @@ import "./App.css";
 //import components
 import Form from "./components/List/CreateList";
 import Item from "./components/Item/CreateItem";
-import ItemList from "./components/Item/ItemList";
 import Pay from "./components/Pay";
 import Receive from "./components/Receive";
 import AccountItemTable from "./components/AccountItemTable";
+import CloseAccounts from "./components/CloseAccounts";
 
 //navbar
 import Navbar from "./components/Navbar/Navbar.component";
@@ -119,9 +119,12 @@ function App() {
     console.log("ping");
 
     const list = await program.account.list.all();
-    console.log("All list", list);
+    const item = await program.account.dataAccount.all();
+
+    console.log("This is the item", item);
 
     const allAccounts = [];
+    const allItems = [];
 
     for (var i = 0; i < list.length; i++) {
       allAccounts.push({
@@ -132,12 +135,19 @@ function App() {
       });
     }
 
-    console.log("todos", allAccounts);
+    for (var i = 0; i < item.length; i++) {
+      allItems.push({
+        id: item[i].publicKey.toString(),
+        creator: item[i].account.creator.toString(),
+        name: item[i].account.name,
+        amount: item[i].account.amount,
+      });
+    }
 
     setTodos(allAccounts);
+    setItemList(allItems);
   };
 
-  console.log("test", todos);
   /*
    * We want to render this UI when the user hasn't connected
    * their wallet to our app yet.
@@ -184,10 +194,6 @@ function App() {
         </div>
 
         <div>
-          <h1> </h1>
-        </div>
-
-        <div>
           <Form
             todos={todos}
             setTodos={setTodos}
@@ -212,14 +218,13 @@ function App() {
             setItemList={setItemList}
             setFilteredItems={setFilteredItems}
             setItemStatus={setItemStatus}
-          />
-          <ItemList
-            itemList={itemList}
-            setItemList={setItemList}
             filteredItems={filteredItems}
-            setFilteredItems={setFilteredItems}
-            list={list}
+          />
+          <CloseAccounts
             todos={todos}
+            setTodos={setTodos}
+            setList={setList}
+            itemList={itemList}
           />
         </div>
       </div>
@@ -276,12 +281,12 @@ function App() {
     } else {
       const name = list;
       let listkey = todos.find((todo) => {
-        if (name === todo.text) return todo;
+        if (name === todo.name) return todo;
       });
 
       console.log(listkey);
 
-      setFilteredItems(itemList.filter((item) => item.list == listkey.id));
+      setFilteredItems(itemList.filter((item) => item.creator == listkey.id));
 
       console.log(filteredItems);
     }

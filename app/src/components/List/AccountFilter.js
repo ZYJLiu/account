@@ -7,11 +7,6 @@ import idl from "../idl.json";
 
 const Todo = ({ name, owner, id, todo, todos, setTodos }) => {
   //SOLANA
-  // SystemProgram is a reference to the Solana runtime!
-  const { SystemProgram, Keypair } = web3;
-
-  // Array to hold list of ListAccount pubkeys.
-
   // Get our program's id from the IDL file.
   const programID = new PublicKey(idl.metadata.address);
 
@@ -35,7 +30,6 @@ const Todo = ({ name, owner, id, todo, todos, setTodos }) => {
 
   const deleteHandler = async (e) => {
     setTodos(todos.filter((el) => el.id !== todo.id));
-    console.log(todo.id);
 
     // e.preventDefault();
 

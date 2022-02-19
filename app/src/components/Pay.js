@@ -57,54 +57,6 @@ const Pay = ({
     return provider;
   };
 
-  const closeAccount = async (e) => {
-    e.preventDefault();
-
-    const provider = getProvider();
-    const program = new Program(idl, programID, provider);
-    console.log("ping");
-    console.log(provider.wallet.publicKey.toString());
-
-    const list = await program.account.list.all();
-    console.log("All list", list);
-
-    //CLOSE ALL LIST ACCOUNTS
-    for (var i = 0; i < list.length; i++) {
-      await program.rpc.cancellist(list[i].account.name, {
-        accounts: {
-          list: list[i].publicKey,
-          owner: list[i].account.owner,
-          itemCreator: provider.wallet.publicKey,
-          user: provider.wallet.publicKey,
-        },
-      });
-    }
-  };
-
-  const closeItem = async (e) => {
-    e.preventDefault();
-
-    const provider = getProvider();
-    const program = new Program(idl, programID, provider);
-    console.log("ping");
-    console.log(provider.wallet.publicKey.toString());
-
-    const items = await program.account.dataAccount.all();
-    console.log("All item", items);
-
-    //Close All Item Accounts
-    for (var i = 0; i < items.length; i++) {
-      console.log(items[i].account.creator);
-      await program.rpc.cancelitem(provider.wallet.publicKey, {
-        accounts: {
-          item: items[i].publicKey,
-          itemCreator: provider.wallet.publicKey,
-          user: provider.wallet.publicKey,
-        },
-      });
-    }
-  };
-
   const pay = async (e) => {
     e.preventDefault();
 
@@ -231,14 +183,7 @@ const Pay = ({
   };
 
   return (
-    <div
-    // style={{
-    //   display: "inline",
-    //   justifyContent: "center",
-    //   alignItems: "center",
-    //   height: "5vh",
-    // }}
-    >
+    <div>
       <ReactNotifications />
       <ul>
         This Pay Button Represents Business Wallet Paying 1 SOL to a Vendor
@@ -258,13 +203,6 @@ const Pay = ({
       </form>
       <ul>Vendor Pubkey: 4B65V1ySBG35UbStDTUDvBTXRfxh6v5tRbLnVrVLpYD2</ul>
       <ul>Business Pubkey: 2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs</ul>
-
-      <button onClick={closeAccount} className="cta-button">
-        Close Accounts
-      </button>
-      <button onClick={closeItem} className="cta-button">
-        Close Items
-      </button>
     </div>
   );
 };

@@ -32,7 +32,7 @@ pub mod anchor {
         let user: &Signer = &ctx.accounts.user;
         
         list.lines.push(*item.to_account_info().key);
-        item.creator = *user.to_account_info().key;
+        item.creator = *list.to_account_info().key;
         item.name = item_name;
         
         Ok(())

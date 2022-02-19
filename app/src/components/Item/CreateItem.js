@@ -1,4 +1,5 @@
 import React from "react";
+import ItemFilter from "./ItemFilter";
 
 //solana
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
@@ -16,6 +17,7 @@ const Item = ({
   list,
   itemList,
   setItemList,
+  filteredItems,
 }) => {
   //SOLANA
   // SystemProgram is a reference to the Solana runtime!
@@ -53,14 +55,16 @@ const Item = ({
       const name = list;
 
       let listkey = todos.find((todo) => {
-        if (name === todo.text) return todo;
+        if (name === todo.name) return todo;
       });
+
+      console.log("listkey", listkey);
 
       //create pubkey for item
       const itemAccount = web3.Keypair.generate();
 
-      //call addItem function from Anchor program
-      await program.rpc.addItem(listkey.text, itemText, {
+      // call addItem function from Anchor program
+      await program.rpc.addItem(listkey.name, itemText, {
         accounts: {
           list: listkey.id,
           owner: listkey.owner,
@@ -72,25 +76,25 @@ const Item = ({
       });
 
       let item = await program.account.dataAccount.fetch(itemAccount.publicKey);
-      console.log(itemAccount.publicKey.toString());
+      console.log("This is the item", item.creator.toString());
 
-      //add created item to ItemList
-      setItemList([
+      // add created item to ItemList
+      setItemList((itemList) => [
         ...itemList,
         {
-          creator: item.creator,
+          id: itemAccount.publicKey.toString(),
+          creator: item.creator.toString(),
           name: item.name,
           amount: item.amount,
-          id: itemAccount.publicKey,
-          list: listkey.id,
         },
       ]);
     } catch (error) {
       console.log("Error creating item:", error);
     }
-
     setItemText("");
   };
+
+  console.log(itemList);
 
   //update ItemText while typing in textbox
   const inputTextHandler = (e) => {
@@ -98,20 +102,36 @@ const Item = ({
   };
 
   return (
-    <form>
-      <div className="input">
-        <input
-          value={itemText}
-          onChange={inputTextHandler}
-          type="text"
-          className="todo-input"
-          placeholder="Create Line Item"
-        />
-        <button onClick={createItem} className="todo-button" type="submit">
-          <i className="fas fa-plus-square"></i>
-        </button>
+    <div>
+      <form>
+        <div className="input">
+          <input
+            value={itemText}
+            onChange={inputTextHandler}
+            type="text"
+            className="todo-input"
+            placeholder="Create Line Item"
+          />
+          <button onClick={createItem} className="todo-button" type="submit">
+            <i className="fas fa-plus-square"></i>
+          </button>
+        </div>
+      </form>
+      <div className="todo-container">
+        <ul className="todo-list">
+          {filteredItems.map((item) => (
+            <ItemFilter
+              itemList={itemList}
+              setItemList={setItemList}
+              id={item.id}
+              item={item}
+              amount={item.amount}
+              name={item.name}
+            />
+          ))}
+        </ul>
       </div>
-    </form>
+    </div>
   );
 };
 
