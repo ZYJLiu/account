@@ -81,7 +81,7 @@
       "accounts": [
         {
           "name": "item",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {

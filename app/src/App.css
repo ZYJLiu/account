@@ -261,7 +261,7 @@ select {
   display: inline-block;
   color: white;
   padding: 10px;
-  width: 40%;
+  width: 55%;
   height: 50px;
   font-size: 18px;
   box-sizing: border-box;
@@ -313,4 +313,11 @@ button {
   display: center;
   transition: all 1s ease;
   text-align: center;
+}
+
+.input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 1s ease;
 }

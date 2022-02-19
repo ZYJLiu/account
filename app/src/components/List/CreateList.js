@@ -116,16 +116,19 @@ const Form = ({
         </select>
       </div>
       <ul>Create Account and Line Items Below</ul>
-      <input
-        value={inputText}
-        onChange={inputTextHandler}
-        type="text"
-        className="todo-input"
-        placeholder="Create Account"
-      />
-      <button onClick={createAccount} className="todo-button" type="submit">
-        <i className="fas fa-plus-square"></i>
-      </button>
+
+      <div className="input">
+        <input
+          value={inputText}
+          onChange={inputTextHandler}
+          type="text"
+          className="todo-input"
+          placeholder="Create Account"
+        />
+        <button onClick={createAccount} className="todo-button" type="submit">
+          <i className="fas fa-plus-square"></i>
+        </button>
+      </div>
     </form>
   );
 };

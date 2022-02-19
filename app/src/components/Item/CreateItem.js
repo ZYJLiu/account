@@ -99,16 +99,18 @@ const Item = ({
 
   return (
     <form>
-      <input
-        value={itemText}
-        onChange={inputTextHandler}
-        type="text"
-        className="todo-input"
-        placeholder="Create Line Item"
-      />
-      <button onClick={createItem} className="todo-button" type="submit">
-        <i className="fas fa-plus-square"></i>
-      </button>
+      <div className="input">
+        <input
+          value={itemText}
+          onChange={inputTextHandler}
+          type="text"
+          className="todo-input"
+          placeholder="Create Line Item"
+        />
+        <button onClick={createItem} className="todo-button" type="submit">
+          <i className="fas fa-plus-square"></i>
+        </button>
+      </div>
     </form>
   );
 };

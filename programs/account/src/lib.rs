@@ -217,6 +217,7 @@ pub struct CancelList<'info> {
 #[derive(Accounts)]
 #[instruction(item: Pubkey)]
 pub struct CancelItem<'info> {
+    #[account(mut)] 
     pub item: Account<'info, DataAccount>,
     pub item_creator: AccountInfo<'info>,
     pub user: Signer<'info>,
