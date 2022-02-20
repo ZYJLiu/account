@@ -18,14 +18,7 @@ import "animate.css/animate.min.css";
 
 import logo from "../assets/pay.svg";
 
-const Receive = ({
-  receiver,
-  setReceiver,
-  filteredItems,
-  setFilteredItems,
-  itemList,
-  setItemList,
-}) => {
+const Receive = ({ setReceiver, itemList, setItemList }) => {
   const BN = require("bn.js");
   const anchor = require("@project-serum/anchor");
   //   console.log(pubkey);

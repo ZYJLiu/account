@@ -21,7 +21,7 @@ const Item = ({
 }) => {
   //SOLANA
   // SystemProgram is a reference to the Solana runtime!
-  const { SystemProgram, Keypair } = web3;
+  const { SystemProgram } = web3;
 
   // Array to hold list of ListAccount pubkeys.
 

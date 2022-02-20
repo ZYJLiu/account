@@ -190,7 +190,19 @@ function App() {
             itemList={itemList}
             total={total}
             setTotal={setTotal}
+            accountName="Revenue"
           />
+          <AccountItemTable
+            todos={todos}
+            itemList={itemList}
+            total={total}
+            setTotal={setTotal}
+            accountName="Expense"
+          />
+
+          <div className="todo-container">
+            <ul className="table">Net Income: {total}</ul>
+          </div>
         </div>
 
         <div>

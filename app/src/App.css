@@ -321,3 +321,15 @@ button {
   align-items: center;
   transition: all 1s ease;
 }
+
+.table {
+  margin: 0.2rem;
+  background: -webkit-linear-gradient(left, #9945ff, #14f195);
+  font-size: 1.5rem;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 1s ease;
+  width: 13rem;
+}
