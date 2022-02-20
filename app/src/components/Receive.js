@@ -18,16 +18,12 @@ import "animate.css/animate.min.css";
 
 import logo from "../assets/pay.svg";
 
-const Receive = ({ setReceiver, itemList, setItemList }) => {
+const Receive = ({ setReceiver, itemList, setItemList, itemOne, itemTwo }) => {
   const BN = require("bn.js");
   const anchor = require("@project-serum/anchor");
-  //   console.log(pubkey);
-
   //SOLANA
   // SystemProgram is a reference to the Solana runtime!
   const { SystemProgram, Keypair } = web3;
-
-  // Array to hold list of ListAccount pubkeys.
 
   // Get our program's id from the IDL file.
   const programID = new PublicKey(idl.metadata.address);
@@ -50,9 +46,7 @@ const Receive = ({ setReceiver, itemList, setItemList }) => {
     return provider;
   };
 
-  const receive = async (e) => {
-    e.preventDefault();
-
+  const receive = async () => {
     const provider = getProvider();
     const program = new Program(idl, programID, provider);
     console.log("ping");
@@ -63,13 +57,24 @@ const Receive = ({ setReceiver, itemList, setItemList }) => {
     const balance = Math.round(
       (await connection.getBalance(Key)) / LAMPORTS_PER_SOL
     );
-    console.log("Remaining SOL Balance ", balance / LAMPORTS_PER_SOL);
+    // console.log("Remaining SOL Balance ", balance / LAMPORTS_PER_SOL);
 
-    const pub = "DVzQNPYtJM5ExgbeaYKskvwNMVoiVsEGtpd8bV7hAFB7";
-    const pub2 = "ANmS1W8bJbn3dSjVUJPakFMvVxq9HZXLVHafxB4sUQiD";
+    var pub = "";
+    var pub2 = "";
+
+    for (let i = 0, len = itemList.length; i < len; i++) {
+      if (itemList[i].name === itemOne) {
+        var pub = itemList[i].id;
+        // console.log("item", itemList[i].name, "amount", itemList[i].amount);
+      }
+      if (itemList[i].name === itemTwo) {
+        var pub2 = itemList[i].id;
+        // console.log("item", itemList[i].name, "amount", itemList[i].amount);
+      }
+    }
 
     try {
-      await program.rpc.receive(new anchor.BN(1), {
+      await program.rpc.receive(new anchor.BN(2), {
         accounts: {
           item1: pub,
           item2: pub2,
@@ -82,73 +87,61 @@ const Receive = ({ setReceiver, itemList, setItemList }) => {
       console.log("Error Pay:", error);
     }
 
-    //2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs
-
-    const ItemKey1 = new PublicKey(pub);
-    const ItemKey2 = new PublicKey(pub2);
-
+    //fetch amounts from item accounts
     const item1 = await program.account.dataAccount.fetch(pub);
     const item2 = await program.account.dataAccount.fetch(pub2);
+
+    let amount = item1.amount.toNumber();
+    let amount2 = item2.amount.toNumber();
 
     //Increment respecting account amounts
     setItemList(
       itemList.map((item) => {
-        if (item.id.toString() === pub2) {
-          return {
-            ...item,
-            amount: item2.amount,
-          };
-        }
         if (item.id.toString() === pub) {
           return {
             ...item,
-            amount: (item.amount += 1),
+            amount: amount,
+          };
+        }
+        if (item.id.toString() === pub2) {
+          return {
+            ...item,
+            amount: amount2,
           };
         }
         return item;
       })
     );
 
-    // console.log("itemList[1] ", itemList[1].id.toString());
-    // console.log("itemList[1] ", itemList[1]);
+    // Store.addNotification({
+    //   title: "Item 2",
+    //   message: "New Amount: " + amount2,
+    //   type: "warning",
+    //   insert: "top",
+    //   container: "top-right",
+    //   animationIn: ["animate__animated", "animate__backInRight"],
+    //   animationOut: ["animate__animated", "animate__fadeOut"],
+    //   dismiss: {
+    //     duration: 5000,
+    //     onScreen: true,
+    //     showIcon: true,
+    //   },
+    // });
 
-    let amount = item1.amount.toString();
-    let amount2 = item2.amount.toString();
-    // console.log("ItemKey1 toString ", ItemKey1.toString());
-    // console.log("item1 ", item1);
-    // console.log("item2 ", item2);
-    // console.log("item1 amount ", item1.amount.toString());
-    // console.log("item2 amount ", item2.amount.toString());
-
-    Store.addNotification({
-      title: "Item 2",
-      message: "New Amount: " + amount2,
-      type: "warning",
-      insert: "top",
-      container: "top-right",
-      animationIn: ["animate__animated", "animate__backInRight"],
-      animationOut: ["animate__animated", "animate__fadeOut"],
-      dismiss: {
-        duration: 5000,
-        onScreen: true,
-        showIcon: true,
-      },
-    });
-
-    Store.addNotification({
-      title: "Item 1",
-      message: "New Amount: " + balance,
-      type: "default",
-      insert: "top",
-      container: "top-right",
-      animationIn: ["animate__animated", "animate__backInRight"],
-      animationOut: ["animate__animated", "animate__fadeOut"],
-      dismiss: {
-        duration: 4000,
-        onScreen: true,
-        showIcon: true,
-      },
-    });
+    // Store.addNotification({
+    //   title: "Item 1",
+    //   message: "New Amount: " + amount,
+    //   type: "default",
+    //   insert: "top",
+    //   container: "top-right",
+    //   animationIn: ["animate__animated", "animate__backInRight"],
+    //   animationOut: ["animate__animated", "animate__fadeOut"],
+    //   dismiss: {
+    //     duration: 4000,
+    //     onScreen: true,
+    //     showIcon: true,
+    //   },
+    // });
 
     Store.addNotification({
       title: "Payment Success!",
@@ -168,28 +161,14 @@ const Receive = ({ setReceiver, itemList, setItemList }) => {
     setReceiver("");
   };
 
-  // const inputTextHandler = (e) => {
-  //   // console.log(e.target.value);
-  //   setReceiver(e.target.value);
-  //   // console.log(receiver);
-  // };
-
   return (
-    <div
-    // style={{
-    //   display: "inline",
-    //   justifyContent: "center",
-    //   alignItems: "center",
-    //   height: "5vh",
-    // }}
-    >
+    <div>
       <ReactNotifications />
       <ul>
         This Buy Button Represents Customer Paying 1 SOL to Business Wallet
       </ul>
       <button onClick={receive} className="button">
         <img src={logo} />
-        {/* <i className="fas fa-smile"></i> Pay (1 SOL) */}
       </button>
     </div>
   );

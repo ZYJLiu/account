@@ -9,6 +9,7 @@ import Pay from "./components/Pay";
 import Receive from "./components/Receive";
 import AccountItemTable from "./components/AccountItemTable";
 import CloseAccounts from "./components/CloseAccounts";
+import NetIncome from "./components/NetIncome";
 
 //navbar
 import Navbar from "./components/Navbar/Navbar.component";
@@ -34,7 +35,6 @@ function App() {
   const [itemList, setItemList] = useState([]);
   const [itemStatus, setItemStatus] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
-  const [total, setTotal] = useState(0);
 
   //wallet
   const [walletAddress, setWalletAddress] = useState(null);
@@ -121,8 +121,6 @@ function App() {
     const list = await program.account.list.all();
     const item = await program.account.dataAccount.all();
 
-    console.log("This is the item", item);
-
     const allAccounts = [];
     const allItems = [];
 
@@ -140,7 +138,7 @@ function App() {
         id: item[i].publicKey.toString(),
         creator: item[i].account.creator.toString(),
         name: item[i].account.name,
-        amount: item[i].account.amount,
+        amount: item[i].account.amount.toNumber(),
       });
     }
 
@@ -172,6 +170,8 @@ function App() {
         setFilteredItems={setFilteredItems}
         itemList={itemList}
         setItemList={setItemList}
+        itemOne="Cash"
+        itemTwo="Coffee"
       />
       <Pay
         receiver={receiver}
@@ -180,6 +180,8 @@ function App() {
         setFilteredItems={setFilteredItems}
         itemList={itemList}
         setItemList={setItemList}
+        itemOne="Cash"
+        itemTwo="Salary Expense"
       />
 
       <div className="row">
@@ -188,21 +190,35 @@ function App() {
           <AccountItemTable
             todos={todos}
             itemList={itemList}
-            total={total}
-            setTotal={setTotal}
             accountName="Revenue"
           />
           <AccountItemTable
             todos={todos}
             itemList={itemList}
-            total={total}
-            setTotal={setTotal}
             accountName="Expense"
           />
+          <NetIncome
+            todos={todos}
+            itemList={itemList}
+            setItemList={setItemList}
+          />
 
-          <div className="todo-container">
-            <ul className="table">Net Income: {total}</ul>
-          </div>
+          <h1>Balance Sheet</h1>
+          <AccountItemTable
+            todos={todos}
+            itemList={itemList}
+            accountName="Asset"
+          />
+          <AccountItemTable
+            todos={todos}
+            itemList={itemList}
+            accountName="Liability"
+          />
+          <AccountItemTable
+            todos={todos}
+            itemList={itemList}
+            accountName="Equity"
+          />
         </div>
 
         <div>

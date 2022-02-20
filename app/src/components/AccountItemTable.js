@@ -10,25 +10,19 @@ import {
 import { Program, Provider, web3 } from "@project-serum/anchor";
 import idl from "./idl.json";
 
-const AccountItemTable = ({
-  itemList,
-  todos,
-  total,
-  setTotal,
-  accountName,
-}) => {
-  console.log("Accounts", todos[1].lines[0].toString());
-  console.log("Items", itemList);
+const AccountItemTable = ({ itemList, todos, accountName }) => {
+  // console.log("Accounts", todos[1].lines[0].toString());
+  // console.log("Items", itemList);
 
   const test = [];
   var AccountID = "";
-  console.log(accountName);
+  // console.log(accountName);
 
   for (let i = 0, len = todos.length; i < len; i++) {
     if (todos[i].name === accountName) {
       test.push(<ul className="account">{todos[i].name}</ul>);
       var AccountID = todos[i].id;
-      console.log("found account", todos[i]);
+      // console.log("found account", todos[i]);
     }
   }
 
@@ -39,7 +33,7 @@ const AccountItemTable = ({
           {itemList[i].name}: {itemList[i].amount.toString()}
         </ul>
       );
-      console.log("item", itemList[i].name, "amount", itemList[i].amount);
+      // console.log("item", itemList[i].name, "amount", itemList[i].amount);
     }
   }
 
@@ -86,8 +80,6 @@ const AccountItemTable = ({
   //     console.log("AMOUNT:", item.amount);
   //   }
   // });
-
-  setTotal(sum);
 
   return (
     <div className="todo-container">

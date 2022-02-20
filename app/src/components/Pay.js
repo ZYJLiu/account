@@ -21,10 +21,10 @@ import logo from "../assets/pay2.svg";
 const Pay = ({
   receiver,
   setReceiver,
-  filteredItems,
-  setFilteredItems,
   itemList,
   setItemList,
+  itemOne,
+  itemTwo,
 }) => {
   const BN = require("bn.js");
   const anchor = require("@project-serum/anchor");
@@ -57,9 +57,7 @@ const Pay = ({
     return provider;
   };
 
-  const pay = async (e) => {
-    e.preventDefault();
-
+  const pay = async () => {
     const provider = getProvider();
     const program = new Program(idl, programID, provider);
     console.log("ping");
@@ -72,8 +70,19 @@ const Pay = ({
     );
     console.log("Remaining SOL Balance ", balance / LAMPORTS_PER_SOL);
 
-    const pub = "DVzQNPYtJM5ExgbeaYKskvwNMVoiVsEGtpd8bV7hAFB7";
-    const pub2 = "GBX5fv7wfZQ33yRwmzhDiCwHWbJ25MuSVV79QsdHJZai";
+    var pub = "";
+    var pub2 = "";
+
+    for (let i = 0, len = itemList.length; i < len; i++) {
+      if (itemList[i].name === itemOne) {
+        var pub = itemList[i].id;
+        console.log("item", itemList[i].name, "amount", itemList[i].amount);
+      }
+      if (itemList[i].name === itemTwo) {
+        var pub2 = itemList[i].id;
+        console.log("item", itemList[i].name, "amount", itemList[i].amount);
+      }
+    }
 
     try {
       await program.rpc.pay(new anchor.BN(1), {
@@ -89,73 +98,61 @@ const Pay = ({
       console.log("Error Pay:", error);
     }
 
-    //2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs
-
-    const ItemKey1 = new PublicKey(pub);
-    const ItemKey2 = new PublicKey(pub2);
-
     const item1 = await program.account.dataAccount.fetch(pub);
+    console.log(item1);
     const item2 = await program.account.dataAccount.fetch(pub2);
+
+    let amount = item1.amount;
+    let amount2 = item2.amount.toNumber();
 
     //Increment respecting account amounts
     setItemList(
       itemList.map((item) => {
-        if (item.id.toString() === pub2) {
-          return {
-            ...item,
-            amount: item2.amount,
-          };
-        }
         if (item.id.toString() === pub) {
           return {
             ...item,
-            amount: balance,
+            amount: amount,
+          };
+        }
+        if (item.id.toString() === pub2) {
+          return {
+            ...item,
+            amount: amount2,
           };
         }
         return item;
       })
     );
 
-    // console.log("itemList[1] ", itemList[1].id.toString());
-    // console.log("itemList[1] ", itemList[1]);
+    // Store.addNotification({
+    //   title: "Item 2",
+    //   message: "New Amount: " + amount2,
+    //   type: "warning",
+    //   insert: "top",
+    //   container: "top-right",
+    //   animationIn: ["animate__animated", "animate__backInRight"],
+    //   animationOut: ["animate__animated", "animate__fadeOut"],
+    //   dismiss: {
+    //     duration: 5000,
+    //     onScreen: true,
+    //     showIcon: true,
+    //   },
+    // });
 
-    let amount = item1.amount.toString();
-    let amount2 = item2.amount.toString();
-    // console.log("ItemKey1 toString ", ItemKey1.toString());
-    // console.log("item1 ", item1);
-    // console.log("item2 ", item2);
-    // console.log("item1 amount ", item1.amount.toString());
-    // console.log("item2 amount ", item2.amount.toString());
-
-    Store.addNotification({
-      title: "Item 2",
-      message: "New Amount: " + amount2,
-      type: "warning",
-      insert: "top",
-      container: "top-right",
-      animationIn: ["animate__animated", "animate__backInRight"],
-      animationOut: ["animate__animated", "animate__fadeOut"],
-      dismiss: {
-        duration: 5000,
-        onScreen: true,
-        showIcon: true,
-      },
-    });
-
-    Store.addNotification({
-      title: "Item 1",
-      message: "New Amount: " + balance,
-      type: "default",
-      insert: "top",
-      container: "top-right",
-      animationIn: ["animate__animated", "animate__backInRight"],
-      animationOut: ["animate__animated", "animate__fadeOut"],
-      dismiss: {
-        duration: 4000,
-        onScreen: true,
-        showIcon: true,
-      },
-    });
+    // Store.addNotification({
+    //   title: "Item 1",
+    //   message: "New Amount: " + amount,
+    //   type: "default",
+    //   insert: "top",
+    //   container: "top-right",
+    //   animationIn: ["animate__animated", "animate__backInRight"],
+    //   animationOut: ["animate__animated", "animate__fadeOut"],
+    //   dismiss: {
+    //     duration: 4000,
+    //     onScreen: true,
+    //     showIcon: true,
+    //   },
+    // });
 
     Store.addNotification({
       title: "Payment Success!",

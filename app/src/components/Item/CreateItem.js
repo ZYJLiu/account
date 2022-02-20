@@ -85,7 +85,7 @@ const Item = ({
           id: itemAccount.publicKey.toString(),
           creator: item.creator.toString(),
           name: item.name,
-          amount: item.amount,
+          amount: item.amount.toNumber(),
         },
       ]);
     } catch (error) {
