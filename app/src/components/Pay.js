@@ -182,10 +182,7 @@ const Pay = ({
   return (
     <div>
       <ReactNotifications />
-      <ul>
-        This Pay Button Represents Business Wallet Paying 1 SOL to a Vendor
-        Wallet
-      </ul>
+
       <button onClick={pay} className="button">
         <img src={logo} />
         {/* <i className="fas fa-smile"></i> Pay (1 SOL) */}

@@ -16,9 +16,15 @@ import { ReactNotifications, Store } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import "animate.css/animate.min.css";
 
-import logo from "../assets/pay.svg";
-
-const Receive = ({ setReceiver, itemList, setItemList, itemOne, itemTwo }) => {
+const Receive = ({
+  setReceiver,
+  itemList,
+  setItemList,
+  itemOne,
+  itemTwo,
+  button,
+  number,
+}) => {
   const BN = require("bn.js");
   const anchor = require("@project-serum/anchor");
   //SOLANA
@@ -74,7 +80,8 @@ const Receive = ({ setReceiver, itemList, setItemList, itemOne, itemTwo }) => {
     }
 
     try {
-      await program.rpc.receive(new anchor.BN(2), {
+      console.log(number);
+      await program.rpc.receive(new anchor.BN(number), {
         accounts: {
           item1: pub,
           item2: pub2,
@@ -144,8 +151,8 @@ const Receive = ({ setReceiver, itemList, setItemList, itemOne, itemTwo }) => {
     // });
 
     Store.addNotification({
-      title: "Payment Success!",
-      message: "Sent 1 Sol",
+      title: "Transaction Success!",
+      message: "SOL Received",
       type: "success",
       insert: "top",
       container: "top-right",
@@ -164,11 +171,8 @@ const Receive = ({ setReceiver, itemList, setItemList, itemOne, itemTwo }) => {
   return (
     <div>
       <ReactNotifications />
-      <ul>
-        This Buy Button Represents Customer Paying 1 SOL to Business Wallet
-      </ul>
       <button onClick={receive} className="button">
-        <img src={logo} />
+        <img src={button} />
       </button>
     </div>
   );

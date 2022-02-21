@@ -21,6 +21,9 @@ import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { Program, Provider, web3 } from "@project-serum/anchor";
 import idl from "./components/idl.json";
 
+import BuyButton from "./assets/pay.svg";
+import AddMoneyButton from "./assets/pay4.svg";
+
 //GIF
 const GIF = ["https://media.giphy.com/media/d4jBk4fb84sTyRmtxt/giphy.gif"];
 
@@ -163,26 +166,54 @@ function App() {
 
   const renderConnectedContainer = () => (
     <div className="connected-container">
-      <Receive
-        receiver={receiver}
-        setReceiver={setReceiver}
-        filteredItems={filteredItems}
-        setFilteredItems={setFilteredItems}
-        itemList={itemList}
-        setItemList={setItemList}
-        itemOne="Cash"
-        itemTwo="Coffee"
-      />
-      <Pay
-        receiver={receiver}
-        setReceiver={setReceiver}
-        filteredItems={filteredItems}
-        setFilteredItems={setFilteredItems}
-        itemList={itemList}
-        setItemList={setItemList}
-        itemOne="Cash"
-        itemTwo="Salary Expense"
-      />
+      <div>
+        <ul>This Button Represents Business taking loan of 3 SOL</ul>
+        <Receive
+          receiver={receiver}
+          setReceiver={setReceiver}
+          filteredItems={filteredItems}
+          setFilteredItems={setFilteredItems}
+          itemList={itemList}
+          setItemList={setItemList}
+          itemOne="Cash"
+          itemTwo="Debt"
+          button={AddMoneyButton}
+          number={3}
+        />
+      </div>
+      <div>
+        <ul>
+          This Buy Button Represents Customer Paying 2 SOL to Business Wallet
+        </ul>
+        <Receive
+          receiver={receiver}
+          setReceiver={setReceiver}
+          filteredItems={filteredItems}
+          setFilteredItems={setFilteredItems}
+          itemList={itemList}
+          setItemList={setItemList}
+          itemOne="Cash"
+          itemTwo="Coffee"
+          button={BuyButton}
+          number={3}
+        />
+      </div>
+      <div>
+        <ul>
+          This Pay Button Represents Business Wallet Paying 1 SOL to a Vendor
+          Wallet
+        </ul>
+        <Pay
+          receiver={receiver}
+          setReceiver={setReceiver}
+          filteredItems={filteredItems}
+          setFilteredItems={setFilteredItems}
+          itemList={itemList}
+          setItemList={setItemList}
+          itemOne="Cash"
+          itemTwo="Operating Expense"
+        />
+      </div>
 
       <div className="row">
         <div>

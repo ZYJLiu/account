@@ -7,7 +7,7 @@ import idl from "./idl.json";
 const NetIncome = ({ itemList, setItemList, todos }) => {
   //   var AccountID = "";
 
-  let sum = 0;
+  let NetIncome = 0;
 
   for (let i = 0, len = todos.length; i < len; i++) {
     if (todos[i].name === "Revenue") {
@@ -15,7 +15,7 @@ const NetIncome = ({ itemList, setItemList, todos }) => {
       console.log("found account", todos[i]);
       for (let i = 0, len = itemList.length; i < len; i++) {
         if (itemList[i].creator === AccountID) {
-          sum += itemList[i].amount;
+          NetIncome += itemList[i].amount;
           console.log(itemList[i].name, itemList[i].amount);
         }
       }
@@ -25,7 +25,7 @@ const NetIncome = ({ itemList, setItemList, todos }) => {
       console.log("found account", todos[i]);
       for (let i = 0, len = itemList.length; i < len; i++) {
         if (itemList[i].creator === AccountID) {
-          sum -= itemList[i].amount;
+          NetIncome -= itemList[i].amount;
           console.log(itemList[i].name, itemList[i].amount);
         }
       }
@@ -34,19 +34,16 @@ const NetIncome = ({ itemList, setItemList, todos }) => {
 
   //updating Retained Earning on Local - to fix
   itemList.forEach((item, index) => {
-    if (item.name === "Retained Earnings") {
+    if (item.name === "Retained Earning") {
       console.log(itemList[index]);
-      itemList[index].amount = sum;
+      itemList[index].amount = NetIncome;
       console.log(itemList[index]);
     }
   });
 
   return (
     <div className="todo-container">
-      <ul className="table">Net Income: {sum}</ul>
-      {/* <button onClick={test} className="cta-button">
-        Close Items
-      </button> */}
+      <ul className="table">Net Income: {NetIncome}</ul>
     </div>
   );
 };
