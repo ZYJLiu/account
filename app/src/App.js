@@ -26,6 +26,11 @@ import AddMoneyButton from "./assets/pay4.svg";
 
 //GIF
 const GIF = ["https://media.giphy.com/media/d4jBk4fb84sTyRmtxt/giphy.gif"];
+const Debt = "https://media.giphy.com/media/YmtNb7rBb12sVWVU0Z/giphy.gif";
+const Beer = "https://media.giphy.com/media/McO7leZ9pxTdHLaQeN/giphy.gif";
+const Beer2 = "https://media.giphy.com/media/IeXeDDIxGrprESmSBT/giphy.gif";
+const Coffee = "https://media.giphy.com/media/g0HiibIiGp2oWQjMy5/giphy.gif";
+const Payment = "https://media.giphy.com/media/nbPGpGAg54Sfj1lr3h/giphy.gif";
 
 function App() {
   //state
@@ -166,53 +171,91 @@ function App() {
 
   const renderConnectedContainer = () => (
     <div className="connected-container">
-      <div>
-        <ul>This Button Represents Business taking loan of 3 SOL</ul>
-        <Receive
-          receiver={receiver}
-          setReceiver={setReceiver}
-          filteredItems={filteredItems}
-          setFilteredItems={setFilteredItems}
-          itemList={itemList}
-          setItemList={setItemList}
-          itemOne="Cash"
-          itemTwo="Debt"
-          button={AddMoneyButton}
-          number={3}
-        />
-      </div>
-      <div>
-        <ul>
-          This Buy Button Represents Customer Paying 2 SOL to Business Wallet
-        </ul>
-        <Receive
-          receiver={receiver}
-          setReceiver={setReceiver}
-          filteredItems={filteredItems}
-          setFilteredItems={setFilteredItems}
-          itemList={itemList}
-          setItemList={setItemList}
-          itemOne="Cash"
-          itemTwo="Coffee"
-          button={BuyButton}
-          number={3}
-        />
-      </div>
-      <div>
-        <ul>
-          This Pay Button Represents Business Wallet Paying 1 SOL to a Vendor
-          Wallet
-        </ul>
-        <Pay
-          receiver={receiver}
-          setReceiver={setReceiver}
-          filteredItems={filteredItems}
-          setFilteredItems={setFilteredItems}
-          itemList={itemList}
-          setItemList={setItemList}
-          itemOne="Cash"
-          itemTwo="Operating Expense"
-        />
+      <div className="row">
+        <div>
+          <div className="gif-grid">
+            <div className="gif-item">
+              <img src={Debt} alt={Debt} />
+            </div>
+          </div>
+          <ul>Debt</ul>
+          <ul>This Button Represents Business taking loan of 3 SOL</ul>
+          <Receive
+            receiver={receiver}
+            setReceiver={setReceiver}
+            filteredItems={filteredItems}
+            setFilteredItems={setFilteredItems}
+            itemList={itemList}
+            setItemList={setItemList}
+            itemOne="Cash"
+            itemTwo="Debt"
+            button={AddMoneyButton}
+            number={3}
+          />
+        </div>
+
+        <div>
+          <div className="gif-grid">
+            <div className="gif-item">
+              <img src={Coffee} alt={Coffee} />
+            </div>
+          </div>
+          <ul>Coffee!</ul>
+          <ul>Customer Paying 2 SOL to Business Wallet</ul>
+          <Receive
+            receiver={receiver}
+            setReceiver={setReceiver}
+            filteredItems={filteredItems}
+            setFilteredItems={setFilteredItems}
+            itemList={itemList}
+            setItemList={setItemList}
+            itemOne="Cash"
+            itemTwo="Coffee"
+            button={BuyButton}
+            number={2}
+          />
+        </div>
+
+        <div>
+          <div className="gif-grid">
+            <div className="gif-item">
+              <img src={Beer2} alt={Beer2} />
+            </div>
+          </div>
+          <ul>Beer!</ul>
+          <ul>Customer Paying 2 SOL to Business Wallet</ul>
+          <Receive
+            receiver={receiver}
+            setReceiver={setReceiver}
+            filteredItems={filteredItems}
+            setFilteredItems={setFilteredItems}
+            itemList={itemList}
+            setItemList={setItemList}
+            itemOne="Cash"
+            itemTwo="Beer"
+            button={BuyButton}
+            number={2}
+          />
+        </div>
+        <div>
+          <div className="gif-grid">
+            <div className="gif-item">
+              <img src={Payment} alt={Payment} />
+            </div>
+          </div>
+          <ul>Operating Expense</ul>
+          <ul>Business Wallet Paying 1 SOL to Vendor Wallet</ul>
+          <Pay
+            receiver={receiver}
+            setReceiver={setReceiver}
+            filteredItems={filteredItems}
+            setFilteredItems={setFilteredItems}
+            itemList={itemList}
+            setItemList={setItemList}
+            itemOne="Cash"
+            itemTwo="Operating Expense"
+          />
+        </div>
       </div>
 
       <div className="row">
@@ -233,7 +276,9 @@ function App() {
             itemList={itemList}
             setItemList={setItemList}
           />
+        </div>
 
+        <div>
           <h1>Balance Sheet</h1>
           <AccountItemTable
             todos={todos}
