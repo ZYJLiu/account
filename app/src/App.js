@@ -237,29 +237,30 @@ function App() {
             number={2}
           />
         </div>
-        <div>
-          <div className="gif-grid">
-            <div className="gif-item">
-              <img src={Payment} alt={Payment} />
-            </div>
+      </div>
+
+      <div>
+        <div className="gif-grid">
+          <div className="gif-item">
+            <img src={Payment} alt={Payment} />
           </div>
-          <ul>Operating Expense</ul>
-          <ul>Business Wallet Paying 1 SOL to Vendor Wallet</ul>
-          <Pay
-            receiver={receiver}
-            setReceiver={setReceiver}
-            filteredItems={filteredItems}
-            setFilteredItems={setFilteredItems}
-            itemList={itemList}
-            setItemList={setItemList}
-            itemOne="Cash"
-            itemTwo="Operating Expense"
-          />
         </div>
+        <ul>Operating Expense</ul>
+        <ul>Business Wallet Paying 1 SOL to Vendor Wallet</ul>
+        <Pay
+          receiver={receiver}
+          setReceiver={setReceiver}
+          filteredItems={filteredItems}
+          setFilteredItems={setFilteredItems}
+          itemList={itemList}
+          setItemList={setItemList}
+          itemOne="Cash"
+          itemTwo="Operating Expense"
+        />
       </div>
 
       <div className="row">
-        <div>
+        <div className="space">
           <h1>Income Statement</h1>
           <AccountItemTable
             todos={todos}
@@ -278,7 +279,7 @@ function App() {
           />
         </div>
 
-        <div>
+        <div className="space">
           <h1>Balance Sheet</h1>
           <AccountItemTable
             todos={todos}
@@ -297,7 +298,8 @@ function App() {
           />
         </div>
 
-        <div>
+        <div className="space">
+          <h1>Account Creation</h1>
           <Form
             todos={todos}
             setTodos={setTodos}
