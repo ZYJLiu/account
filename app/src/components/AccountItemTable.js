@@ -1,15 +1,5 @@
 import React from "react";
 
-//solana
-import {
-  Connection,
-  PublicKey,
-  clusterApiUrl,
-  LAMPORTS_PER_SOL,
-} from "@solana/web3.js";
-import { Program, Provider, web3 } from "@project-serum/anchor";
-import idl from "./idl.json";
-
 const AccountItemTable = ({ itemList, todos, accountName }) => {
   // console.log("Accounts", todos[1].lines[0].toString());
   // console.log("Items", itemList);

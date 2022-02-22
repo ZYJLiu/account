@@ -201,6 +201,7 @@ select {
   font-weight: bold;
   color: white;
   background: #9945ff;
+  margin: 10px;
 }
 
 .connect-wallet-button {
@@ -238,8 +239,8 @@ select {
   grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   grid-gap: 1.5rem;
   justify-items: center;
-  margin: 0px;
-  padding: 0px;
+  margin: 10px;
+  padding: 10px;
 }
 
 .gif-grid .gif-item {
@@ -338,4 +339,37 @@ button {
 .space {
   margin-left: 50px;
   margin-right: 50px;
+}
+
+/* table */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 1rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 20em;
+  box-shadow: 0 5px 10px #9945ff;
+}
+
+th,
+td {
+  border: 1px solid #ffffff;
+  font-size: 20px;
+  padding: 8px;
+}
+
+th {
+  /* box-shadow: 0 5px 10px #9945ff; */
+  background: -webkit-linear-gradient(bottom left, #9945ff, #14f195);
+  letter-spacing: 0.1rem;
+  font-weight: 900;
+}
+
+td {
+  /* box-shadow: 0 5px 10px #9945ff; */
+  background: -webkit-linear-gradient(bottom left, #9945ff, #14f195);
 }

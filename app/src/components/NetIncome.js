@@ -43,7 +43,19 @@ const NetIncome = ({ itemList, setItemList, todos }) => {
 
   return (
     <div className="todo-container">
-      <ul className="table">Net Income: {NetIncome}</ul>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2" align="center">
+              Total
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <td width="213">Net Income</td>
+          <td align="right">{NetIncome}</td>
+        </tbody>
+      </table>
     </div>
   );
 };

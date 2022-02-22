@@ -77,16 +77,18 @@ const CloseAccounts = (setItemList, itemList, item, todos, setTodos) => {
 
   return (
     <div>
-      <ul>
-        <button onClick={closeAccount} className="cta-button">
-          Close Accounts
-        </button>
-      </ul>
-      <ul>
-        <button onClick={closeItem} className="cta-button">
-          Close Items
-        </button>
-      </ul>
+      <div className="row">
+        <ul>
+          <button onClick={closeAccount} className="cta-button">
+            Close Accounts
+          </button>
+        </ul>
+        <ul>
+          <button onClick={closeItem} className="cta-button">
+            Close Items
+          </button>
+        </ul>
+      </div>
     </div>
   );
 };

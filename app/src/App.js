@@ -10,6 +10,7 @@ import Receive from "./components/Receive";
 import AccountItemTable from "./components/AccountItemTable";
 import CloseAccounts from "./components/CloseAccounts";
 import NetIncome from "./components/NetIncome";
+import Table from "./components/Table";
 
 //navbar
 import Navbar from "./components/Navbar/Navbar.component";
@@ -262,16 +263,8 @@ function App() {
       <div className="row">
         <div className="space">
           <h1>Income Statement</h1>
-          <AccountItemTable
-            todos={todos}
-            itemList={itemList}
-            accountName="Revenue"
-          />
-          <AccountItemTable
-            todos={todos}
-            itemList={itemList}
-            accountName="Expense"
-          />
+          <Table todos={todos} itemList={itemList} accountName="Revenue" />
+          <Table todos={todos} itemList={itemList} accountName="Expense" />
           <NetIncome
             todos={todos}
             itemList={itemList}
@@ -281,58 +274,53 @@ function App() {
 
         <div className="space">
           <h1>Balance Sheet</h1>
-          <AccountItemTable
-            todos={todos}
-            itemList={itemList}
-            accountName="Asset"
-          />
-          <AccountItemTable
-            todos={todos}
-            itemList={itemList}
-            accountName="Liability"
-          />
-          <AccountItemTable
-            todos={todos}
-            itemList={itemList}
-            accountName="Equity"
-          />
+          <Table todos={todos} itemList={itemList} accountName="Asset" />
+          <Table todos={todos} itemList={itemList} accountName="Liability" />
+          <Table todos={todos} itemList={itemList} accountName="Equity" />
         </div>
 
         <div className="space">
-          <h1>Account Creation</h1>
-          <Form
-            todos={todos}
-            setTodos={setTodos}
-            inputText={inputText}
-            setInputText={setInputText}
-            setStatus={setStatus}
-            setList={setList}
-            setItemStatus={setItemStatus}
-            filteredItems={filteredItems}
-            setFilteredItems={setFilteredItems}
-            filteredTodos={filteredTodos}
-          />
-          <Item
-            todos={todos}
-            setTodos={setTodos}
-            itemText={itemText}
-            setItemText={setItemText}
-            setStatus={setStatus}
-            list={list}
-            setList={setList}
-            itemList={itemList}
-            setItemList={setItemList}
-            setFilteredItems={setFilteredItems}
-            setItemStatus={setItemStatus}
-            filteredItems={filteredItems}
-          />
-          <CloseAccounts
-            todos={todos}
-            setTodos={setTodos}
-            setList={setList}
-            itemList={itemList}
-          />
+          <h1>Statement of Cash Flows</h1>
+          <Table todos={todos} itemList={itemList} accountName="Operating" />
+          <Table todos={todos} itemList={itemList} accountName="Investing" />
+          <Table todos={todos} itemList={itemList} accountName="Financing" />
         </div>
+      </div>
+
+      <div className="space">
+        <h1>Account Creation</h1>
+        <Form
+          todos={todos}
+          setTodos={setTodos}
+          inputText={inputText}
+          setInputText={setInputText}
+          setStatus={setStatus}
+          setList={setList}
+          setItemStatus={setItemStatus}
+          filteredItems={filteredItems}
+          setFilteredItems={setFilteredItems}
+          filteredTodos={filteredTodos}
+        />
+        <Item
+          todos={todos}
+          setTodos={setTodos}
+          itemText={itemText}
+          setItemText={setItemText}
+          setStatus={setStatus}
+          list={list}
+          setList={setList}
+          itemList={itemList}
+          setItemList={setItemList}
+          setFilteredItems={setFilteredItems}
+          setItemStatus={setItemStatus}
+          filteredItems={filteredItems}
+        />
+        <CloseAccounts
+          todos={todos}
+          setTodos={setTodos}
+          setList={setList}
+          itemList={itemList}
+        />
       </div>
     </div>
   );
