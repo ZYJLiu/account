@@ -172,39 +172,87 @@ function App() {
 
   const renderConnectedContainer = () => (
     <div className="connected-container">
-      <div className="row">
-        <div>
-          <div className="gif-grid">
-            <div className="gif-item">
-              <img src={Debt} alt={Debt} />
+      <div className="background">
+        <div className="row">
+          <div>
+            <div className="gif-grid">
+              <div className="gif-item">
+                <img src={Debt} alt={Debt} />
+              </div>
             </div>
+            <ul>Debt</ul>
+            <ul>This Button Represents Business taking loan of 3 SOL</ul>
+            <Receive
+              receiver={receiver}
+              setReceiver={setReceiver}
+              filteredItems={filteredItems}
+              setFilteredItems={setFilteredItems}
+              itemList={itemList}
+              setItemList={setItemList}
+              itemOne="Cash"
+              itemTwo="Debt"
+              itemThree="Fin Inflow"
+              button={AddMoneyButton}
+              number={3}
+            />
           </div>
-          <ul>Debt</ul>
-          <ul>This Button Represents Business taking loan of 3 SOL</ul>
-          <Receive
-            receiver={receiver}
-            setReceiver={setReceiver}
-            filteredItems={filteredItems}
-            setFilteredItems={setFilteredItems}
-            itemList={itemList}
-            setItemList={setItemList}
-            itemOne="Cash"
-            itemTwo="Debt"
-            itemThree="Fin Inflow"
-            button={AddMoneyButton}
-            number={3}
-          />
+
+          <div>
+            <div className="gif-grid">
+              <div className="gif-item">
+                <img src={Coffee} alt={Coffee} />
+              </div>
+            </div>
+            <ul>Coffee!</ul>
+            <ul>Customer Paying 2 SOL to Business Wallet</ul>
+            <Receive
+              receiver={receiver}
+              setReceiver={setReceiver}
+              filteredItems={filteredItems}
+              setFilteredItems={setFilteredItems}
+              itemList={itemList}
+              setItemList={setItemList}
+              itemOne="Cash"
+              itemTwo="Coffee"
+              itemThree="Op Inflow"
+              button={BuyButton}
+              number={2}
+            />
+          </div>
+
+          <div>
+            <div className="gif-grid">
+              <div className="gif-item">
+                <img src={Beer2} alt={Beer2} />
+              </div>
+            </div>
+            <ul>Beer!</ul>
+            <ul>Customer Paying 2 SOL to Business Wallet</ul>
+            <Receive
+              receiver={receiver}
+              setReceiver={setReceiver}
+              filteredItems={filteredItems}
+              setFilteredItems={setFilteredItems}
+              itemList={itemList}
+              setItemList={setItemList}
+              itemOne="Cash"
+              itemTwo="Beer"
+              itemThree="Op Inflow"
+              button={BuyButton}
+              number={2}
+            />
+          </div>
         </div>
 
         <div>
           <div className="gif-grid">
             <div className="gif-item">
-              <img src={Coffee} alt={Coffee} />
+              <img src={Payment} alt={Payment} />
             </div>
           </div>
-          <ul>Coffee!</ul>
-          <ul>Customer Paying 2 SOL to Business Wallet</ul>
-          <Receive
+          <ul>Operating Expense</ul>
+          <ul>Business Wallet Paying 1 SOL to Vendor Wallet</ul>
+          <Pay
             receiver={receiver}
             setReceiver={setReceiver}
             filteredItems={filteredItems}
@@ -212,119 +260,77 @@ function App() {
             itemList={itemList}
             setItemList={setItemList}
             itemOne="Cash"
-            itemTwo="Coffee"
-            itemThree="Op Inflow"
-            button={BuyButton}
-            number={2}
-          />
-        </div>
-
-        <div>
-          <div className="gif-grid">
-            <div className="gif-item">
-              <img src={Beer2} alt={Beer2} />
-            </div>
-          </div>
-          <ul>Beer!</ul>
-          <ul>Customer Paying 2 SOL to Business Wallet</ul>
-          <Receive
-            receiver={receiver}
-            setReceiver={setReceiver}
-            filteredItems={filteredItems}
-            setFilteredItems={setFilteredItems}
-            itemList={itemList}
-            setItemList={setItemList}
-            itemOne="Cash"
-            itemTwo="Beer"
-            itemThree="Op Inflow"
-            button={BuyButton}
-            number={2}
+            itemTwo="Operating Expense"
+            itemThree="Op Outflow"
           />
         </div>
       </div>
 
-      <div>
-        <div className="gif-grid">
-          <div className="gif-item">
-            <img src={Payment} alt={Payment} />
+      <div className="background">
+        <div className="row">
+          <div className="space">
+            <h1>Income Statement</h1>
+            <Table todos={todos} itemList={itemList} accountName="Revenue" />
+            <Table todos={todos} itemList={itemList} accountName="Expense" />
+            <NetIncome
+              todos={todos}
+              itemList={itemList}
+              setItemList={setItemList}
+            />
+          </div>
+
+          <div className="space">
+            <h1>Balance Sheet</h1>
+            <Table todos={todos} itemList={itemList} accountName="Asset" />
+            <Table todos={todos} itemList={itemList} accountName="Liability" />
+            <Table todos={todos} itemList={itemList} accountName="Equity" />
+          </div>
+
+          <div className="space">
+            <h1>Statement of Cash Flows</h1>
+            <Table todos={todos} itemList={itemList} accountName="Operating" />
+            <Table todos={todos} itemList={itemList} accountName="Investing" />
+            <Table todos={todos} itemList={itemList} accountName="Financing" />
           </div>
         </div>
-        <ul>Operating Expense</ul>
-        <ul>Business Wallet Paying 1 SOL to Vendor Wallet</ul>
-        <Pay
-          receiver={receiver}
-          setReceiver={setReceiver}
-          filteredItems={filteredItems}
-          setFilteredItems={setFilteredItems}
-          itemList={itemList}
-          setItemList={setItemList}
-          itemOne="Cash"
-          itemTwo="Operating Expense"
-          itemThree="Op Outflow"
-        />
       </div>
 
-      <div className="row">
+      <div className="background">
         <div className="space">
-          <h1>Income Statement</h1>
-          <Table todos={todos} itemList={itemList} accountName="Revenue" />
-          <Table todos={todos} itemList={itemList} accountName="Expense" />
-          <NetIncome
+          <h1>Account Creation</h1>
+          <Form
             todos={todos}
+            setTodos={setTodos}
+            inputText={inputText}
+            setInputText={setInputText}
+            setStatus={setStatus}
+            setList={setList}
+            setItemStatus={setItemStatus}
+            filteredItems={filteredItems}
+            setFilteredItems={setFilteredItems}
+            filteredTodos={filteredTodos}
+          />
+          <Item
+            todos={todos}
+            setTodos={setTodos}
+            itemText={itemText}
+            setItemText={setItemText}
+            setStatus={setStatus}
+            list={list}
+            setList={setList}
             itemList={itemList}
             setItemList={setItemList}
+            setFilteredItems={setFilteredItems}
+            setItemStatus={setItemStatus}
+            filteredItems={filteredItems}
+          />
+          <CloseAccounts
+            todos={todos}
+            setTodos={setTodos}
+            setList={setList}
+            itemList={itemList}
           />
         </div>
-
-        <div className="space">
-          <h1>Balance Sheet</h1>
-          <Table todos={todos} itemList={itemList} accountName="Asset" />
-          <Table todos={todos} itemList={itemList} accountName="Liability" />
-          <Table todos={todos} itemList={itemList} accountName="Equity" />
-        </div>
-
-        <div className="space">
-          <h1>Statement of Cash Flows</h1>
-          <Table todos={todos} itemList={itemList} accountName="Operating" />
-          <Table todos={todos} itemList={itemList} accountName="Investing" />
-          <Table todos={todos} itemList={itemList} accountName="Financing" />
-        </div>
-      </div>
-
-      <div className="space">
-        <h1>Account Creation</h1>
-        <Form
-          todos={todos}
-          setTodos={setTodos}
-          inputText={inputText}
-          setInputText={setInputText}
-          setStatus={setStatus}
-          setList={setList}
-          setItemStatus={setItemStatus}
-          filteredItems={filteredItems}
-          setFilteredItems={setFilteredItems}
-          filteredTodos={filteredTodos}
-        />
-        <Item
-          todos={todos}
-          setTodos={setTodos}
-          itemText={itemText}
-          setItemText={setItemText}
-          setStatus={setStatus}
-          list={list}
-          setList={setList}
-          itemList={itemList}
-          setItemList={setItemList}
-          setFilteredItems={setFilteredItems}
-          setItemStatus={setItemStatus}
-          filteredItems={filteredItems}
-        />
-        <CloseAccounts
-          todos={todos}
-          setTodos={setTodos}
-          setList={setList}
-          itemList={itemList}
-        />
       </div>
     </div>
   );
