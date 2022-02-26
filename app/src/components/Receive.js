@@ -22,6 +22,7 @@ const Receive = ({
   setItemList,
   itemOne,
   itemTwo,
+  itemThree,
   button,
   number,
 }) => {
@@ -67,6 +68,7 @@ const Receive = ({
 
     var pub = "";
     var pub2 = "";
+    var pub3 = "";
 
     for (let i = 0, len = itemList.length; i < len; i++) {
       if (itemList[i].name === itemOne) {
@@ -77,6 +79,10 @@ const Receive = ({
         var pub2 = itemList[i].id;
         // console.log("item", itemList[i].name, "amount", itemList[i].amount);
       }
+      if (itemList[i].name === itemThree) {
+        var pub3 = itemList[i].id;
+        // console.log("item", itemList[i].name, "amount", itemList[i].amount);
+      }
     }
 
     try {
@@ -85,6 +91,7 @@ const Receive = ({
         accounts: {
           item1: pub,
           item2: pub2,
+          item3: pub3,
           payer: provider.wallet.publicKey,
           user: "2Dbi1BTTVFeL8KD5r9sUxxdyjUbwFCGQ2eEWNpdvrYWs",
           systemProgram: SystemProgram.programId,
@@ -97,9 +104,11 @@ const Receive = ({
     //fetch amounts from item accounts
     const item1 = await program.account.dataAccount.fetch(pub);
     const item2 = await program.account.dataAccount.fetch(pub2);
+    const item3 = await program.account.dataAccount.fetch(pub3);
 
     let amount = item1.amount.toNumber();
     let amount2 = item2.amount.toNumber();
+    let amount3 = item3.amount.toNumber();
 
     //Increment respecting account amounts
     setItemList(
@@ -114,6 +123,12 @@ const Receive = ({
           return {
             ...item,
             amount: amount2,
+          };
+        }
+        if (item.id.toString() === pub3) {
+          return {
+            ...item,
+            amount: amount3,
           };
         }
         return item;

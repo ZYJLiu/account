@@ -190,6 +190,7 @@ function App() {
             setItemList={setItemList}
             itemOne="Cash"
             itemTwo="Debt"
+            itemThree="Fin Inflow"
             button={AddMoneyButton}
             number={3}
           />
@@ -212,6 +213,7 @@ function App() {
             setItemList={setItemList}
             itemOne="Cash"
             itemTwo="Coffee"
+            itemThree="Op Inflow"
             button={BuyButton}
             number={2}
           />
@@ -234,6 +236,7 @@ function App() {
             setItemList={setItemList}
             itemOne="Cash"
             itemTwo="Beer"
+            itemThree="Op Inflow"
             button={BuyButton}
             number={2}
           />
@@ -257,6 +260,7 @@ function App() {
           setItemList={setItemList}
           itemOne="Cash"
           itemTwo="Operating Expense"
+          itemThree="Op Outflow"
         />
       </div>
 

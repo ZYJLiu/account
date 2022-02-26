@@ -10,7 +10,7 @@ const idl = JSON.parse(
 
 //Address of the deployed program
 const programId = new anchor.web3.PublicKey(
-  "4kiCL5ZnfTViX7WddCYvGMowULgkJNrnAAWRoz3JVT7e"
+  "4m74PiSDGJp4QFmcU2b2KDUBNPuLMSjaD9oFi9ccK8KW"
 );
 
 //Generate the program client from IDL

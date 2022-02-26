@@ -1,11 +1,11 @@
 [programs.localnet]
-account = "4kiCL5ZnfTViX7WddCYvGMowULgkJNrnAAWRoz3JVT7e"
+account = "4m74PiSDGJp4QFmcU2b2KDUBNPuLMSjaD9oFi9ccK8KW"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/home/zyjliu/.config/solana/id.json"
 
 [scripts]

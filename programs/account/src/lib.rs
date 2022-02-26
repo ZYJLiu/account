@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::AccountsClose;
 
-declare_id!("4kiCL5ZnfTViX7WddCYvGMowULgkJNrnAAWRoz3JVT7e");
+declare_id!("4m74PiSDGJp4QFmcU2b2KDUBNPuLMSjaD9oFi9ccK8KW");
 
 #[program]
 pub mod anchor {
@@ -67,9 +67,11 @@ pub mod anchor {
     ) -> ProgramResult {
         let item1 = &mut ctx.accounts.item1;
         let item2 = &mut ctx.accounts.item2;
+        let item3 = &mut ctx.accounts.item3;
         let payer= &ctx.accounts.payer;
         item1.amount += amount;
         item2.amount += amount;
+        item3.amount += amount;
 
 
         let ix = anchor_lang::solana_program::system_instruction::transfer(
@@ -95,10 +97,12 @@ pub mod anchor {
     ) -> ProgramResult {
         let item1 = &mut ctx.accounts.item1;
         let item2 = &mut ctx.accounts.item2;
+        let item3 = &mut ctx.accounts.item3;
         let user: &Signer = &ctx.accounts.user;
         item1.amount -= amount;
         item2.amount += amount;
-
+        item3.amount += amount;
+        
 
         let ix = anchor_lang::solana_program::system_instruction::transfer(
             &ctx.accounts.user.key(),
@@ -233,6 +237,8 @@ pub struct Receive<'info> {
     #[account(mut)]
     pub item2: Account<'info, DataAccount>,
     #[account(mut)]
+    pub item3: Account<'info, DataAccount>,
+    #[account(mut)]
     pub payer: Signer<'info>,
     #[account(mut)]
     pub user: AccountInfo<'info>,
@@ -246,6 +252,8 @@ pub struct Pay<'info> {
     pub item1: Account<'info, DataAccount>,
     #[account(mut)]
     pub item2: Account<'info, DataAccount>,
+    #[account(mut)]
+    pub item3: Account<'info, DataAccount>,
     #[account(mut)]
     pub receiver: AccountInfo<'info>,
     #[account(mut)]

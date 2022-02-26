@@ -147,6 +147,11 @@
           "isSigner": false
         },
         {
+          "name": "item3",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "payer",
           "isMut": true,
           "isSigner": true
@@ -179,6 +184,11 @@
         },
         {
           "name": "item2",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "item3",
           "isMut": true,
           "isSigner": false
         },
@@ -259,6 +269,6 @@
     }
   ],
   "metadata": {
-    "address": "4kiCL5ZnfTViX7WddCYvGMowULgkJNrnAAWRoz3JVT7e"
+    "address": "4m74PiSDGJp4QFmcU2b2KDUBNPuLMSjaD9oFi9ccK8KW"
   }
 }
