@@ -19,7 +19,7 @@ const Table = ({ itemList, todos, accountName }) => {
       <table>
         <thead>
           <tr>
-            <th colspan="2" align="center">
+            <th colSpan="2" align="center">
               {accountName}
             </th>
           </tr>
@@ -37,7 +37,7 @@ const Table = ({ itemList, todos, accountName }) => {
             .map((item) => (
               <tr>
                 <td width="350px">{item.name}</td>
-                <td align="right">{item.amount}</td>
+                <td align="right">{item.amount.toString()}</td>
               </tr>
             ))}
         </tbody>

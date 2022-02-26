@@ -46,7 +46,7 @@ const NetIncome = ({ itemList, setItemList, todos }) => {
       <table>
         <thead>
           <tr>
-            <th colspan="2" align="center">
+            <th colSpan="2" align="center">
               Total
             </th>
           </tr>

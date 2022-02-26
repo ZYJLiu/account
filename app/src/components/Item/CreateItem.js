@@ -94,7 +94,7 @@ const Item = ({
     setItemText("");
   };
 
-  console.log(itemList);
+  // console.log(itemList);
 
   //update ItemText while typing in textbox
   const inputTextHandler = (e) => {
