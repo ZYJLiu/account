@@ -1,10 +1,6 @@
 import React from "react";
-//solana
-import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
-import { Program, Provider, web3 } from "@project-serum/anchor";
-import idl from "./idl.json";
 
-const NetIncome = ({ itemList, setItemList, todos }) => {
+const NetIncome = ({ itemList, todos }) => {
   //   var AccountID = "";
 
   let NetIncome = 0;

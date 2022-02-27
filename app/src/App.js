@@ -10,6 +10,7 @@ import Receive from "./components/Receive";
 import AccountItemTable from "./components/AccountItemTable";
 import CloseAccounts from "./components/CloseAccounts";
 import NetIncome from "./components/NetIncome";
+import NetCash from "./components/NetCash";
 import Table from "./components/Table";
 
 //navbar
@@ -291,6 +292,7 @@ function App() {
             <Table todos={todos} itemList={itemList} accountName="Operating" />
             <Table todos={todos} itemList={itemList} accountName="Investing" />
             <Table todos={todos} itemList={itemList} accountName="Financing" />
+            <NetCash itemList={itemList} />
           </div>
         </div>
       </div>
